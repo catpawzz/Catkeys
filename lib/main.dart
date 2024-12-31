@@ -25,15 +25,20 @@ import 'dart:async';
 import 'package:catkeys/pre/setup.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main/home.dart';
 
-void main() {
+Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarIconBrightness: Brightness.light, // Light icons on dark background
     statusBarColor: Colors.transparent, // Make status bar transparent
   ));
+  WidgetsFlutterBinding.ensureInitialized();
+  timeDilation = 1.0;
+  await FlutterDisplayMode.setHighRefreshRate();
   runApp(const MyApp());
 }
 

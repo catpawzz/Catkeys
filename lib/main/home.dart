@@ -657,6 +657,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         return Future.value(false);
       },
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
