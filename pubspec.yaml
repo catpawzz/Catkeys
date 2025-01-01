@@ -25,9 +25,7 @@ dependencies:
   http: ^1.1.0
   zxing_lib: ^1.1.2
   toastification: ^1.2.1
-  flutter_statusbarcolor_ns: ^0.5.0
   audioplayers: ^5.2.1
-  flutter_local_notifications: ^17.0.0
   package_info_plus: 8.0.2
   flutter_markdown: ^0.7.3
   device_info_plus: ^9.1.2

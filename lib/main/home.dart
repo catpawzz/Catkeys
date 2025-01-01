@@ -163,6 +163,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.blue, // Set the navigation bar color here
+    systemNavigationBarIconBrightness: Brightness.light, // Set the icon brightness
+  ));
     fetchData();
 
     tabs1.addListener(() {
@@ -657,7 +661,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         return Future.value(false);
       },
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
