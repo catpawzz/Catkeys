@@ -30,14 +30,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 import '../main/home.dart';
 
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarIconBrightness: Brightness.light, // Light icons on dark background
-    statusBarColor: Colors.transparent, // Make status bar transparent
-  ));
-  runApp(const Settings());
-}
-
 class Settings extends StatelessWidget {
   const Settings({super.key});
 
@@ -46,23 +38,10 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return MaterialApp(
+        return const  MaterialApp(
           title: 'Settings',
           themeMode: ThemeMode.system, // Use device's color scheme
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: lightDynamic?.harmonized() ??
-                ColorScheme.fromSeed(seedColor: Colors.purple),
-            fontFamily: 'Inter', // Set the font family to Inter
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: darkDynamic?.harmonized() ??
-                ColorScheme.fromSeed(
-                    seedColor: Colors.purple, brightness: Brightness.dark),
-            fontFamily: 'Inter',
-          ),
-          home: const SettingsPage(title: 'Settings'),
+          home: SettingsPage(title: 'Settings'),
         );
       },
     );
@@ -259,7 +238,7 @@ class _SettingsPageState extends State<SettingsPage> {
           automaticallyImplyLeading: false, 
           elevation: 0.0,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(4.0), // height of the bottom border
+            preferredSize: const Size.fromHeight(4.0), // height of the bottom border
             child: Container(
               color:
                   Theme.of(context).colorScheme.primary, // color of the border
@@ -316,7 +295,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Shown posts',
+                      'Number of displayed posts',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -383,21 +362,22 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     const SizedBox(height: 8),
                     ListTile(
-                      title: Text(
-                        'Enable Haptic Feedback',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                      contentPadding: EdgeInsets.zero, // Remove padding from sides
+                      title: const Text(
+                      'Enable Haptic Feedback',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
                       ),
                       trailing: Switch(
-                        value: hapticFeedback, // Replace with your switch value
-                        onChanged: (value) {
-                          setState(() {
-                            hapticFeedback = value;
-                            changeHaptics(value);
-                          });
-                        },
+                      value: hapticFeedback, // Replace with your switch value
+                      onChanged: (value) {
+                        setState(() {
+                        hapticFeedback = value;
+                        changeHaptics(value);
+                        });
+                      },
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -608,6 +588,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     const SizedBox(height: 8),
                     const Text(
                       'This app uses the fonts INTER and BAGEL, which are licensed under the SIL Open Font License 1.1. You can view the license on the Google Fonts website.',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Divider(),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Current app version',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

@@ -44,18 +44,6 @@ import 'package:intl/intl.dart';
 
 import '../pre/setup.dart';
 
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarIconBrightness: Brightness.light, // Light icons on dark background
-    statusBarColor: Colors.transparent, // Make status bar transparent
-    systemNavigationBarColor:
-        Colors.transparent, // Make navigation bar transparent
-    systemNavigationBarIconBrightness:
-        Brightness.light, // Light icons on navigation bar
-  ));
-  runApp(const Home());
-}
-
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -162,11 +150,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
-      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.blue, // Set the navigation bar color here
-    systemNavigationBarIconBrightness: Brightness.light, // Set the icon brightness
-  ));
+  super.initState();
     fetchData();
 
     tabs1.addListener(() {
@@ -181,7 +165,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Brightness.light, // Light icons on dark background
       statusBarColor: Colors.transparent, // Make status bar transparent
       systemNavigationBarColor:
-          Colors.transparent, // Make navigation bar transparent
+          Color(0xFF173138), // Make navigation bar transparent
       systemNavigationBarIconBrightness:
           Brightness.light, // Light icons on navigation bar
     ));
@@ -652,7 +636,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Brightness.light, // Light icons on dark background
       statusBarColor: Colors.transparent, // Make status bar transparent
       systemNavigationBarColor:
-          Colors.transparent, // Make navigation bar transparent
+          Color(0xFF173138), // Make navigation bar transparent
       systemNavigationBarIconBrightness:
           Brightness.light, // Light icons on navigation bar
     ));
@@ -666,7 +650,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarIconBrightness:
                 Brightness.light, // Light icons on dark background
-            statusBarColor: Colors.transparent, // Make status bar transparent
+            statusBarColor: Colors.transparent, // Make status bar transparent // Make navigation bar transparent
           ),
           backgroundColor:
               Theme.of(context).colorScheme.primary.withOpacity(0.1),
