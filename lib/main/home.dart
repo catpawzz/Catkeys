@@ -43,6 +43,7 @@ import 'package:vibration/vibration.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import '../inc/nav.dart';
 import '../pre/setup.dart';
 
 class Home extends StatelessWidget {
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-  super.initState();
+    super.initState();
     fetchData();
 
     tabs1.addListener(() {
@@ -532,21 +533,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
-  navSettings() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => const SettingsPage(title: 'Settings')),
-    );
-  }
-
-  navAnnoucements() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AnnouncementsPage()),
-    );
-  }
-
   navProfile() {
     currentPageIndex = 3;
   }
@@ -618,8 +604,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarIconBrightness:
-          Brightness.light, // Light icons on dark background
-            statusBarColor: Colors.transparent, // Make status bar transparent // Make navigation bar transparent
+                Brightness.light, // Light icons on dark background
+            statusBarColor: Colors
+                .transparent, // Make status bar transparent // Make navigation bar transparent
           ),
           backgroundColor:
               Theme.of(context).colorScheme.primary.withOpacity(0.1),
@@ -627,18 +614,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-          widget.title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+                widget.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
               Text(
-            'Connected to $url', // Add your subtitle text here
-          style: TextStyle(
-            fontSize: 14,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+                'Connected to $url', // Add your subtitle text here
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
             ],
           ),
@@ -646,128 +633,128 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           actions: [
             PopupMenuButton(
               itemBuilder: (BuildContext context) {
-          return [
-            const PopupMenuItem(
-              value: 'Settings',
-              child: Row(
-                children: [
-            Icon(Icons.settings_rounded),
-            SizedBox(width: 10),
-            Text('Settings'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'Refresh Notes',
-              child: Row(
-                children: [
-            Icon(Icons.refresh_rounded),
-            SizedBox(width: 10),
-            Text('Refresh Notes'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'Source Code',
-              child: Row(
-                children: [
-            Icon(Icons.source_rounded),
-            SizedBox(width: 10),
-            Text('Source Code'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'Announcements',
-              child: Row(
-                children: [
-            Icon(Icons.announcement_rounded),
-            SizedBox(width: 10),
-            Text('Announcements'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'Log Out',
-              child: Row(
-                children: [
-            Icon(Icons.logout_rounded),
-            SizedBox(width: 10),
-            Text('Log Out'),
-                ],
-              ),
-            ),
-          ];
+                return [
+                  const PopupMenuItem(
+                    value: 'Settings',
+                    child: Row(
+                      children: [
+                        Icon(Icons.settings_rounded),
+                        SizedBox(width: 10),
+                        Text('Settings'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'Refresh Notes',
+                    child: Row(
+                      children: [
+                        Icon(Icons.refresh_rounded),
+                        SizedBox(width: 10),
+                        Text('Refresh Notes'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'Source Code',
+                    child: Row(
+                      children: [
+                        Icon(Icons.source_rounded),
+                        SizedBox(width: 10),
+                        Text('Source Code'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'Announcements',
+                    child: Row(
+                      children: [
+                        Icon(Icons.announcement_rounded),
+                        SizedBox(width: 10),
+                        Text('Announcements'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'Log Out',
+                    child: Row(
+                      children: [
+                        Icon(Icons.logout_rounded),
+                        SizedBox(width: 10),
+                        Text('Log Out'),
+                      ],
+                    ),
+                  ),
+                ];
               },
               onSelected: (value) async {
-          if (value == 'Settings') {
-            vibrateSelection();
-            navSettings();
-          } else if (value == 'Refresh Notes') {
-            vibrateSelection();
-            refreshNotesD();
-          } else if (value == 'Source Code') {
-            vibrateSelection();
-            const url = 'https://github.com/catpawzz/Catkeys';
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              Fluttertoast.showToast(
-                msg: 'There while launching a browser!',
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.TOP,
-                backgroundColor:
-              Theme.of(context).colorScheme.onErrorContainer,
-                textColor: Theme.of(context).colorScheme.error,
-              );
-            }
-          } else if (value == 'Log Out') {
-            vibrateError();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-            title: const Text('Logging Out'),
-            content: const Text(
-                "Are you sure you want to log out? This won't clear your settings."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
+                if (value == 'Settings') {
                   vibrateSelection();
-                },
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  clearData();
+                  navSettings(context);
+                } else if (value == 'Refresh Notes') {
                   vibrateSelection();
-                },
-                child: const Text('Confirm'),
-              ),
-            ],
-                );
-              },
-            );
-          } else if (value == 'Announcements') {
-            vibrateSelection();
-            navAnnoucements();
-          }
+                  refreshNotesD();
+                } else if (value == 'Source Code') {
+                  vibrateSelection();
+                  const url = 'https://github.com/catpawzz/Catkeys';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: 'There while launching a browser!',
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.TOP,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.onErrorContainer,
+                      textColor: Theme.of(context).colorScheme.error,
+                    );
+                  }
+                } else if (value == 'Log Out') {
+                  vibrateError();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Logging Out'),
+                        content: const Text(
+                            "Are you sure you want to log out? This won't clear your settings."),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              vibrateSelection();
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              clearData();
+                              vibrateSelection();
+                            },
+                            child: const Text('Confirm'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (value == 'Announcements') {
+                  vibrateSelection();
+                  navAnnoucements(context);
+                }
               },
             ),
           ],
           elevation: 0.0,
           bottom: currentPageIndex != 0
               ? PreferredSize(
-            preferredSize:
-                Size.fromHeight(4.0), // height of the bottom border
-            child: Container(
-              color: Theme.of(context)
-            .colorScheme
-            .primary, // color of the border
-              height: 2.0, // thickness of the border
-            ),
-          )
+                  preferredSize:
+                      Size.fromHeight(4.0), // height of the bottom border
+                  child: Container(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary, // color of the border
+                    height: 2.0, // thickness of the border
+                  ),
+                )
               : null,
         ),
         body: Center(
@@ -828,41 +815,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ],
                             ),
                           )),
-
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⠋⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡞⠦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠋⠀⠀⢸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠈⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⠁⠀⠀⠀⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠇⠀⠀⠀⠀⠈⠻⣄⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⢀⡞⠁⠀⠀⠀⠀⠀⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠀⠀⠀⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⢀⡾⠁⠀⠀⠀⠀⠀⠀⢸⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠃⠀⠀⠀⠀⠀⠀⠀⠀⢹⡆⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠀⠀⠀⠀⠀⠀⠀⣷⠀⠀⠀⠀⠀⠀⣶⣦⡀⠀⠀⠀⠀⠀⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⢰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⠀⠀⠀⢸⠃⠈⠳⣄⠀⠀⠀⢸⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣇⠀⠀⠀⠀       Cookies are delicious
-//⠀⠀⠀⠀⠀⢀⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⠀⠀⠀⠀⡞⠀⠀⠀⠘⢧⡀⠀⡾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡀⠀⠀⠀
-//⠀⠀⠀⠀⠀⣸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠇⠀⠀⠀⡇⠀⠀⠀⠀⠀⠹⣦⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⠀⠀        Sadly, I don't have anyone to share them with
-//⠀⠀⠀⠀⢠⡟⠀⠀⠀⠀⠀⠀⠀⠀⡤⠤⠴⠒⠲⠖⠒⠦⠴⠇⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀
-//⠀⠀⠀⠀⢸⠇⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀         Join me in my quest to find someone to share cookies with
-//⠀⠀⠀⠀⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠶⣄⣀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⠀⠀
-//⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡤⠴⠶⠶⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠈⠉⠙⠓⠂⠀⠀⠀⠀⠀⠀⠀⠀⣸⠁⠀⠀⠀
-//⠀⠀⠀⠀⢸⡆⠀⠀⠀⠀⠀⠀⠀⠚⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠤⠤⠤⢤⣄⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⠀⠀⠀
-//⠀⠀⠀⠀⠈⢷⠀⠀⠀⠀⠀⠀⢀⣤⠖⠚⠉⠉⠙⢶⡀⠀⠀⠀⠀⠀⣴⠋⠁⠀⠀⠀⠀⠀⠈⠳⣆⠀⠀⠀⠀⠀⢀⡞⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠘⣦⠀⠀⠀⠀⣰⠟⠁⠀⠀⠀⠀⣠⡌⠃⠀⠀⠀⠀⠘⢣⣦⡄⠀⠀⠀⠀⠀⠀⠀⠙⣦⠀⠀⠀⠀⠯⠤⠤⣤⣄⣀⣀
-//⣤⡤⢤⣀⣀⣀⣈⣳⠄⠀⢠⡏⠀⠀⠀⠀⠀⠀⣿⣷⠀⠀⠀⠀⠀⠀⢸⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⢹⡄⠀⠀⠀⠀⠀⠀⠀⢀⣴⠏
-//⠀⠙⠦⣄⠀⠀⠈⠉⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⢿⣿⠀⠀⠀⠀⠀⠀⠘⣿⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⡄⠀⡀⠀⠀⠀⢠⠞⠁⠀
-//⠀⠀⠀⠘⠳⣤⠀⠀⣠⠀⢿⣀⣀⠀⠀⠀⠀⠀⠘⠋⠀⠀⠀⠀⠀⠀⠀⠙⠃⠀⠀⠀⠀⠀⠀⠀⢀⡼⣇⡴⠞⣿⠀⢀⡴⠋⠀⠀⠀
-//⠀⠀⠀⢀⡴⠋⣀⣾⣡⠖⠋⢡⣏⠀⠀⠀⠀⠀⠀⠀⠀⠘⠛⠛⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡟⠁⠀⠸⠃⠀⣿⠀⠀⠀⠀⠀
-//⠀⢀⡴⠋⠀⠀⠋⠟⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠀⠀⠀
-//⠐⠯⣥⣤⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡦⣤⣤⡶⠓⠦⣤⣤⣤⣴⡞⠁⠀⠀⠀⠀⠀⢀⡀⢠⠀⠀⠀⠀⠀⢀⣈⣿⣆⣠
-//⠀⠀⠀⠀⠀⠀⠁⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⠀⣉⠀⠀⠀⠀⠀⠀⠓⠃⠀⠀⠀⠀⠀⢀⣀⣥⠶⠚⠒⠒⠓⠋⠉⠉⠀⠀⠁
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣖⠶⠤⠤⢤⡄⣿⣀⠀⠀⠛⠀⠀⠀⠀⣴⣦⠀⠇⠀⠀⠀⢸⠋⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣄⠀⠀⠀⠀⠸⣿⠀⠀⠀⠀⠀⣤⡤⠉⣡⡞⠀⠀⠀⠀⠘⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣆⠀⠀⠀⠀⠈⠓⠦⠤⣤⡤⠭⠵⠛⠁⠀⠀⠀⠀⠀⠀⢳⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣁⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⢛⡷⠒⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-                        
                       SizedBox(
                         height: MediaQuery.of(context).size.height -
                             kToolbarHeight - // Subtract the app bar height
@@ -1436,35 +1388,123 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ),
                                     Row(
                                       children: [
-                                      IconButton(
-                                        icon: Icon(
-                                        Icons.add_reaction_rounded,
-                                        color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.add_reaction_rounded,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ),
+                                          onPressed: () {
+                                            vibrateSelection();
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return Dialog(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(16.0), // Adds padding inside the dialog
+                                                      child: SizedBox(
+                                                        width: 300,
+                                                        height: 300,
+                                                        child: GridView.builder(
+                                                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                                            crossAxisCount: 5,
+                                                            crossAxisSpacing: 8.0, // Adjust the spacing between columns
+                                                            mainAxisSpacing: 8.0, // Adjust the spacing between rows
+                                                            childAspectRatio: 1.5, // Adjust the size of the items
+                                                          ),
+                                                          itemCount: _customEmojis.length,
+                                                          itemBuilder: (context, index) {
+                                                            String emojiName = _customEmojis.keys.elementAt(index);
+                                                            String emojiUrl = _customEmojis[emojiName]!;
+
+                                                            return GestureDetector(
+                                                              onTap: () async {
+                                                                vibrateSelection();
+                                                                Navigator.pop(context); // Close the dialog
+                                                                try {
+                                                                    await client.notes.reactions.create(
+                                                                    NotesReactionsCreateRequest(
+                                                                      noteId: note.id,
+                                                                      reaction: emojiName,
+                                                                    ),
+                                                                    );
+                                                                  Fluttertoast.showToast(
+                                                                    msg: 'Reaction added successfully!',
+                                                                    toastLength: Toast.LENGTH_LONG,
+                                                                    gravity: ToastGravity.TOP,
+                                                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                                                    textColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                                                                  );
+                                                                } catch (e) {
+                                                                  Fluttertoast.showToast(
+                                                                    msg: 'There was an error while adding the reaction!',
+                                                                    toastLength: Toast.LENGTH_LONG,
+                                                                    gravity: ToastGravity.TOP,
+                                                                    backgroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                                                                    textColor: Theme.of(context).colorScheme.error,
+                                                                  );
+                                                                }
+                                                              },
+                                                              child: Image.network(emojiUrl), // Show emoji image
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            
+                                          },
                                         ),
-                                        onPressed: () {
-                                        vibrateSelection();
-                                        // Add your reaction handling code here
-                                        },
-                                      ),
-                                    if (note.reactions != null && note.reactions!.isNotEmpty) ...[
-                                      Text(
-                                      note.reactions!.length == 1
-                                        ? 'One person has reacted'
-                                        : '${note.reactions!.length} people have reacted',
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.secondary,
-                                      ),
-                                      ),
-                                    ] else ...[
-                                      Text(
-                                      'No one has reacted',
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.secondary,
-                                      ),
-                                      ),
-                                    ],
+                                        if (note.reactions != null &&
+                                            note.reactions!.isNotEmpty) ...[
+                                            if (note.reactions!.length == 1) ...[
+                                            Text(
+                                              'Someone reacted with ',
+                                              style: TextStyle(
+                                              color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                              ),
+                                            ),
+                                            MarkdownBody(
+                                              data: _replaceEmojis(note.reactions.keys.first.replaceAll('@.', '')),
+                                              styleSheet: MarkdownStyleSheet(
+                                              p: const TextStyle(
+                                                fontSize: 20,
+                                              ),
+                                              ),
+                                              imageBuilder: (uri, title, alt) {
+                                              return Image.network(
+                                                uri.toString(),
+                                                width: 20,
+                                                height: 20,
+                                                fit: BoxFit.contain,
+                                              );
+                                              },
+                                            ),
+                                          ] else ...[
+                                            Text(
+                                              '${note.reactions!.length} people have reacted',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                              ),
+                                            ),
+                                          ],
+                                        ] else ...[
+                                          Text(
+                                            'No one has reacted',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                            ),
+                                          ),
+                                        ],
                                       ],
                                     ),
                                     const Divider(),
@@ -1626,9 +1666,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       width: 3,
                                     ),
                                   ),
@@ -1685,7 +1724,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 ),
                               ],
                             ),
-                            
                           ],
                         ),
 
