@@ -26,6 +26,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:video_player/video_player.dart';
 
+import '../inc/features.dart';
+
 class VideoPlayerPage extends StatefulWidget {
   final String videoUrl;
 
@@ -117,22 +119,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       setState(() {
         // This will trigger a rebuild to show the repeat button
       });
-    }
-  }
-
-    vibrateSelection() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? status = prefs.getBool('catkeys_haptics');
-    if (status == true) {
-      final hasCustomVibrationsSupport =
-          await Vibration.hasCustomVibrationsSupport();
-      if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-        Vibration.vibrate(duration: 50);
-      } else {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 50));
-        Vibration.vibrate();
-      }
     }
   }
 

@@ -25,6 +25,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:catkeys/inc/features.dart';
 import 'package:catkeys/internal/video-player.dart';
 import 'package:catkeys/main/annoucements.dart';
 import 'package:catkeys/main/settings.dart';
@@ -328,38 +329,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  vibrateSelection() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? status = prefs.getBool('catkeys_haptics');
-    if (status == true) {
-      final hasCustomVibrationsSupport =
-          await Vibration.hasCustomVibrationsSupport();
-      if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-        Vibration.vibrate(duration: 50);
-      } else {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 50));
-        Vibration.vibrate();
-      }
-    }
-  }
-
-  vibrateError() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? status = prefs.getBool('catkeys_haptics');
-    if (status == true) {
-      final hasCustomVibrationsSupport =
-          await Vibration.hasCustomVibrationsSupport();
-      if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-        Vibration.vibrate(duration: 200);
-      } else {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 200));
-        Vibration.vibrate();
-      }
-    }
-  }
-
   createNote() async {
     String content = _noteController.text;
     try {
@@ -415,7 +384,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⢠⡏⠀⢹⡀⠀⠀⠉⠻⠆⠀⢷⣠⠶⠚⠋⠉⠉⠛⠒⡦⠀⠀⡇⠀⠀⠀⠀⠈⠳⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⣦⣤⣦⣄⠙⠶⠄⠀⠀⠀⠀⠀⠀⠀⣀⣠⢴⡆⠀⢰⠓⢶⢦⣿⠀⠀⠀⠀⠀⠀⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     Hey guys if anyone of you sees this and wants to be my friend
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣠⡏⠁⠛⠁⠀⠀⢀⣀⡀⠀⠀⠀⠀⢯⠀⡼⠁⢠⠇⠀⢸⠀⠉⠀⠀⠀⠀⠀⠀⠘⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⣤⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡽⣿⣄⣴⠄⠀⠀⠀⠛⠉⠙⣦⠀⠀⠀⠈⠉⠁⣰⠏⠀⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⢰⡇⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀     Add me on discord: french_femboi
+//⣤⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡽⣿⣄⣴⠄⠀⠀⠀⠛⠉⠙⣦⠀⠀⠀⠈⠉⠁⣰⠏⠀⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⢰⡇⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀     Add me on discord: catpawzz
 //⠸⡿⢿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣱⡟⠛⠛⠀⠀⠀⢰⣿⠀⠀⢹⡄⠀⠀⠰⣤⠾⠁⠀⣄⢀⡏⠀⠀⠀⠀⠀⠀⠀⢠⡟⠉⠁⠀⠀⠉⡇⠀⠀⠀⠀⠀⠀
 //⠀⢻⠀⠙⢷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⡘⠛⠀⠀⠀⠘⢫⣀⠀⠸⠃⠀⠀⠀⢙⡦⠀⢀⣟⠟⠀⠀⠀⠀⠀⠀⢀⣠⡟⠀⠀⠀⠀⡴⠋⠁⠀⠀⠀⠀⠀⠀
 //⠀⠘⣇⠀⠀⠙⣷⣄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⠀⠙⠳⢤⣄⣀⣀⣀⠛⠻⠆⠀⡶⠶⢾⣉⣀⣠⣼⠉⠀⠀⠠⢤⣤⡶⠺⢯⣀⣧⠀⠀⠀⠀⢻⡤⠖⠚⠛⠦⣄⡀⠀
@@ -649,145 +618,156 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarIconBrightness:
-                Brightness.light, // Light icons on dark background
+          Brightness.light, // Light icons on dark background
             statusBarColor: Colors.transparent, // Make status bar transparent // Make navigation bar transparent
           ),
           backgroundColor:
               Theme.of(context).colorScheme.primary.withOpacity(0.1),
-            title: Text(
-            widget.title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Bagel',
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+          widget.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+              ),
+              Text(
+            'Connected to $url', // Add your subtitle text here
+          style: TextStyle(
+            fontSize: 14,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+              ),
+            ],
+          ),
           automaticallyImplyLeading: false, // Remove back button
           actions: [
             PopupMenuButton(
               itemBuilder: (BuildContext context) {
-                return [
-                  const PopupMenuItem(
-                    value: 'Settings',
-                    child: Row(
-                      children: [
-                        Icon(Icons.settings_rounded),
-                        SizedBox(width: 10),
-                        Text('Settings'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'Refresh Notes',
-                    child: Row(
-                      children: [
-                        Icon(Icons.refresh_rounded),
-                        SizedBox(width: 10),
-                        Text('Refresh Notes'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'Source Code',
-                    child: Row(
-                      children: [
-                        Icon(Icons.source_rounded),
-                        SizedBox(width: 10),
-                        Text('Source Code'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'Announcements',
-                    child: Row(
-                      children: [
-                        Icon(Icons.announcement_rounded),
-                        SizedBox(width: 10),
-                        Text('Announcements'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'Log Out',
-                    child: Row(
-                      children: [
-                        Icon(Icons.logout_rounded),
-                        SizedBox(width: 10),
-                        Text('Log Out'),
-                      ],
-                    ),
-                  ),
-                ];
+          return [
+            const PopupMenuItem(
+              value: 'Settings',
+              child: Row(
+                children: [
+            Icon(Icons.settings_rounded),
+            SizedBox(width: 10),
+            Text('Settings'),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'Refresh Notes',
+              child: Row(
+                children: [
+            Icon(Icons.refresh_rounded),
+            SizedBox(width: 10),
+            Text('Refresh Notes'),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'Source Code',
+              child: Row(
+                children: [
+            Icon(Icons.source_rounded),
+            SizedBox(width: 10),
+            Text('Source Code'),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'Announcements',
+              child: Row(
+                children: [
+            Icon(Icons.announcement_rounded),
+            SizedBox(width: 10),
+            Text('Announcements'),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'Log Out',
+              child: Row(
+                children: [
+            Icon(Icons.logout_rounded),
+            SizedBox(width: 10),
+            Text('Log Out'),
+                ],
+              ),
+            ),
+          ];
               },
               onSelected: (value) async {
-                if (value == 'Settings') {
+          if (value == 'Settings') {
+            vibrateSelection();
+            navSettings();
+          } else if (value == 'Refresh Notes') {
+            vibrateSelection();
+            refreshNotesD();
+          } else if (value == 'Source Code') {
+            vibrateSelection();
+            const url = 'https://github.com/catpawzz/Catkeys';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              Fluttertoast.showToast(
+                msg: 'There while launching a browser!',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.TOP,
+                backgroundColor:
+              Theme.of(context).colorScheme.onErrorContainer,
+                textColor: Theme.of(context).colorScheme.error,
+              );
+            }
+          } else if (value == 'Log Out') {
+            vibrateError();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+            title: const Text('Logging Out'),
+            content: const Text(
+                "Are you sure you want to log out? This won't clear your settings."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
                   vibrateSelection();
-                  navSettings();
-                } else if (value == 'Refresh Notes') {
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  clearData();
                   vibrateSelection();
-                  refreshNotesD();
-                } else if (value == 'Source Code') {
-                  vibrateSelection();
-                  const url = 'https://github.com/french-femboi/Catkeys';
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    Fluttertoast.showToast(
-                      msg: 'There while launching a browser!',
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.TOP,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.onErrorContainer,
-                      textColor: Theme.of(context).colorScheme.error,
-                    );
-                  }
-                } else if (value == 'Log Out') {
-                  vibrateError();
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Logging Out'),
-                        content: const Text(
-                            "Are you sure you want to log out? This won't clear your settings."),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              vibrateSelection();
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              clearData();
-                              vibrateSelection();
-                            },
-                            child: const Text('Confirm'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else if (value == 'Announcements') {
-                  vibrateSelection();
-                  navAnnoucements();
-                }
+                },
+                child: const Text('Confirm'),
+              ),
+            ],
+                );
+              },
+            );
+          } else if (value == 'Announcements') {
+            vibrateSelection();
+            navAnnoucements();
+          }
               },
             ),
           ],
           elevation: 0.0,
           bottom: currentPageIndex != 0
               ? PreferredSize(
-                  preferredSize:
-                      Size.fromHeight(4.0), // height of the bottom border
-                  child: Container(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primary, // color of the border
-                    height: 2.0, // thickness of the border
-                  ),
-                )
+            preferredSize:
+                Size.fromHeight(4.0), // height of the bottom border
+            child: Container(
+              color: Theme.of(context)
+            .colorScheme
+            .primary, // color of the border
+              height: 2.0, // thickness of the border
+            ),
+          )
               : null,
         ),
         body: Center(

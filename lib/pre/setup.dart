@@ -26,6 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import '../inc/nav.dart';
 import '../main/home.dart';
 
 void main() {
@@ -84,13 +85,6 @@ class _SetupPageState extends State<SetupPage> {
   void dispose() {
     _urlController.dispose();
     super.dispose();
-  }
-
-  navHome() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HomePage(title: 'Catkeys')),
-    );
   }
 
   checkInstance() {
@@ -157,7 +151,7 @@ class _SetupPageState extends State<SetupPage> {
     await prefs.setString('catkeys_token', token);
     await prefs.setInt('catkeys_posts_shows', 100);
     await prefs.setBool('catkeys_haptics', true);
-    navHome();
+    navHome(context);
   }
 
   vibrateSelection() async {

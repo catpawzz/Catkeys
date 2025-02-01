@@ -29,6 +29,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'inc/nav.dart';
 import 'main/home.dart';
 
 Future<void> main() async {
@@ -113,27 +114,13 @@ class _MyHomePageState extends State<MyHomePage> {
     checkData();
   }
 
-  navSetup() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SetupPage(title: 'CatKeys setup')),
-    );
-  }
-
-  navHome() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HomePage(title: 'CatKeys')),
-    );
-  }
-
   checkData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool catkeysInstanceExists = prefs.containsKey('catkeys_url');
     if (catkeysInstanceExists) {
-      navHome();
+      //navHome(context);
     } else {
-      navSetup();
+      //navSetup(context);
     }
   }
 
@@ -185,13 +172,20 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'CK',
               style: TextStyle(
-                fontSize: 150,
-                fontWeight: FontWeight.w900,
-                color: Theme.of(context).colorScheme.primary,
-                fontFamily: 'Bagel',
+              fontSize: 150,
+              fontWeight: FontWeight.w900,
+              color: Theme.of(context).colorScheme.primary,
+              fontFamily: 'Bagel',
+              shadows: [
+                Shadow(
+                blurRadius: 80.0,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                offset: Offset(0, 0),
+                ),
+              ],
               ),
             ),
-              const SizedBox(height: 6),
+            const SizedBox(height: 6),
             Text(
               'CatKeys',
               style: TextStyle(
@@ -202,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Made with <3 by French Femboi',
+              'Made with <3 by Catpawzz',
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.secondary,

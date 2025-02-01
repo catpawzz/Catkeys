@@ -21,6 +21,7 @@
 //   ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠋⠀⠀⠀⠀⠀⠀⠀
 // This app was made by a boykisser - Deal with it >:3
 //
+import 'package:catkeys/inc/features.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
+import '../inc/nav.dart';
 import '../main/home.dart';
 
 class Settings extends StatelessWidget {
@@ -74,51 +76,12 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 
-  navHome() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HomePage(title: 'Catkeys')),
-    );
-  }
-
   fetchSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _postsController.text = (prefs.getInt('catkeys_posts_shows').toString());
       hapticFeedback = prefs.getBool('catkeys_haptics') ?? true;
     });
-  }
-
-  vibrateSelection() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? status = prefs.getBool('catkeys_haptics');
-    if (status == true) {
-      final hasCustomVibrationsSupport =
-          await Vibration.hasCustomVibrationsSupport();
-      if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-        Vibration.vibrate(duration: 50);
-      } else {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 50));
-        Vibration.vibrate();
-      }
-    }
-  }
-
-  vibrateError() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? status = prefs.getBool('catkeys_haptics');
-    if (status == true) {
-      final hasCustomVibrationsSupport =
-          await Vibration.hasCustomVibrationsSupport();
-      if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-        Vibration.vibrate(duration: 200);
-      } else {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 200));
-        Vibration.vibrate();
-      }
-    }
   }
 
   savePostNumbers() async {
@@ -218,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
               GestureDetector(
                 onTap: () {
                   vibrateSelection();
-                  navHome();
+                  navHome(context);
                 },
                 child: Icon(
                   Icons.arrow_back_ios_new_rounded,
@@ -421,7 +384,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               onPressed: () {
                                 vibrateSelection();
                                 openLink(
-                                    "https://github.com/french-femboi/Catkeys");
+                                    "https://github.com/catpawzz/Catkeys");
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor:
@@ -483,12 +446,60 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                               ],
                             ),
+
+                            //                                                                                               
+//                      ⢀⣐⣀⡀                                                                     
+//                     ⠊⡅⠃⠃⠋⠯⠔⣰⣐⣀⡀                                                               
+//                     ⣿⡕      ⠃⠃⠯⠏⣼⣴⣐⡀                                                          
+//                     ⢯⡕           ⠁⠃⠏⢽⣴⣐⣀                                                      
+//                     ⢿⡑                ⠂⠃⠏⠍⠏⠼⠸⢼⣴⣐⣀⣠⢐⣀⣀⣀                 ⢀⣀⣀⣀⣀⣀⣀⣠⣰⣰⣰⣐           
+//                     ⢪⡕                        ⠂⠃⠃⠃⠏⠏⠏⠏⠾⠽⠯⠼⢼⣼⣼⣘⣰⣀⣠⣰⣰⠼⠼⠿⠕⠏⠇⠃⠃⠃⠃⠃⠃⠃⠃⠂⠋⠕          
+//                     ⠪⣵                                       ⠂⠃⠃⠃⠁                 ⢈⡔         
+//                      ⣿                                                             ⣶          
+//                      ⢫⡕                                                           ⣸⠜          
+//                      ⠊⡥                                                          ⢀⣿           MEOW MEOW 
+//                      ⣪⡕                                                          ⢪⡕            THIS CODE IS MINE
+//                     ⢀⣿⠁                                                         ⢠⡿⠁              >:3
+//                     ⣪⡕                                                         ⢀⣾⠕            
+//                     ⣿                                                         ⢀⢾⠗             
+//                     ⠃                                                         ⠂               
+//        ⣠⣀⣀⣀⣀⣀⣀⣀⣀⣀                                                             ⠼⠾⠼⠟⠭⠼⠼⠼⠼⠐      
+//        ⠃⠃⠃⠃⠃⠃⠃⠃⠏⠋⠏                                                                            
+//                                                                                               
+//              ⢀⣀⣀⣀⣐        ⢠⣾⣿⣿⣽⡐                                            ⠊⠏⠯⠼⠼⣰⣐⡀          
+//       ⢀⣠⣰⣰⣼⠼⠿⠟⠏⠃⠃⠃        ⠂⠿⣿⡿⠿⠁       ⣀                                          ⠃⠋⠽⠼⣰⣐⣀     
+//       ⠃⠃⠃⠁         ⣐                  ⠪⣿⣰⣰⡾⡽⢴⣀   ⢀                     ⢀⣾⠕ ⠈⠭⢴⡐        ⠃⠏⠅    
+//                    ⢋⣽⣰                      ⠂⠋⠿⢾⣼⠿⠟        ⢀⣸⣽⣼⣴⡐    ⢀⣸⠿⠇     ⠯⣴⣐             
+//                  ⣠⣸⠿⠟⠿⣿⣴⣀⡀                                 ⠯⢿⠿⠟⠏⠁  ⣀⣰⣿⠑        ⠊⣿             
+//                ⢀⣾⠇      ⠥⠓⠼⡠⡐⡀                                  ⢠⣼⠿⠇ ⢿⣐         ⣿             
+//                ⢪⡕          ⡐⡂⠁⠁⠂  ⠈⠄                        ⣠⣰⣼⣿⠟⠁   ⠂⣿⣽⣴⣐    ⣠⡺⠇             
+//                ⠪⣕          ⣂⡽⣺⣜⢰ ⡀               ⠈ ⠤⢴⣌⣰⣰⡴⣼⣿⣿⣿⡿⠏⠁     ⡠⢾⣿⡷⠋⠿⠯⠏⠏⠇               
+//                 ⠂⠯⣴⣐⣀⡀ ⣀⣠⣰⠂⠯⣵⡀ ⠋⠉⠮⡼⣴⣰⣴⣀⡰              ⠁ ⠌⣁⣿⠟⠅        ⠁⢪⣿⠁                     
+//                   ⠂⠃⠏⠏⠏⠇⠃⠃⢨⡿⠇⠍⣐     ⠃⠋⠏⠯⠽⣼⣴⣰⣰⣀⣀⣀⡀     ⣸⣼⣿⠟⠁           ⣪⡕                      
+//                          ⣐⠟⠅  ⠢⣽⡐           ⠂⠋⠏⠯⠿⠿⠿⠿⣿⣿⡿⠟⠅            ⢠⠯⢽⡐                     
+//                         ⢠⠗     ⠊⣿⡀                                  ⡨⠅ ⢪⡕                     
+//                         ⢾       ⠊⣽⡐                                 ⠅  ⢂⣽                     
+//                        ⣢⡿        ⠫⣽                                   ⢠⣾⠅                     
+//                       ⢨⡟          ⣿                                  ⢀⡿⠅                      
+//                      ⢠⣿⠁         ⢠⣿                                  ⢮⡕                       
+//                      ⣪⡕           ⣿⡔                                 ⢪⡕                       
+//                     ⣺⠟            ⠫⣿⡀                                ⣪⡕                       
+//                   ⣸⡚⠇              ⠯⣽⡀                              ⢀⣿⠅                       
+//                 ⢀⣾⠇               ⠂⠤⣯⣵⡀                             ⢪⣿⣅⡀                      
+//                 ⠪⣷⡀               ⢀⣠⡧⢯⣽⣐                            ⣾⡗⠂⢌                      
+//                  ⠃⣱⡀         ⡀    ⠎⠂  ⠯⠯⣽⡐                        ⢀⣸⣿⠁  ⡕                     
+//                   ⠂⠏⠽⠼⠼⢴⢸⡼⠾⠿⠏⠟⠭⠼⠘⢸⢴⣰⣐⣀⡀ ⠂⠯⣴                       ⠊⢿⣿⡐⢀⢈⠅                     
+//                                    ⠂⠂⠃⠏⠟⠽ ⠇⣽⡀                       ⠊⢽⣚⠁                      
+//                                            ⠂⠯⣴                        ⠊⢵⡀                     
+//                                              ⠫⣔                         ⠋⢐                    
+//                                               ⢫⡐                         ⠂⢭⡐                  
+//   
                             const SizedBox(height: 8),
                             ElevatedButton(
                               onPressed: () {
                                 vibrateSelection();
                                 openLink(
-                                    "https://github.com/french-femboi/Catkeys/network/dependencies");
+                                    "https://github.com/catpawzz/Catkeys/network/dependencies");
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor:
@@ -555,7 +566,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               onPressed: () {
                                 vibrateSelection();
                                 openLink(
-                                    "https://github.com/french-femboi/Catkeys/blob/main/LICENSE");
+                                    "https://github.com/catpawzz/Catkeys/blob/main/LICENSE");
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor:
@@ -583,21 +594,67 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                     ),
+//                                                                                                                                     
+//                             ⢀⠰⢰⡀                                                                                                    
+//                             ⣿  ⠊⢥⡀                                                                                                  
+//                            ⢪⡕    ⠃⠤⡀                                    ⢀⣀⣰⣰⡐                                                       
+//                            ⣪⡕⢀⣰⣀⡀  ⠂⠵⡀                               ⣀⣰⣼⣿⣿⡟⠇⡕                                                       
+//                            ⡟ ⢪⣿⠋⢿⡀   ⠋⢐           ⣸              ⢀⣠⣼⣿⣿⣿⣿⡿⠇ ⢀⠁                                                       
+//                            ⠕ ⢃⣿  ⠫⣴⡀   ⠥⡀        ⣺⡕           ⣀⣸⣾⣿⣿⣿⣿⣿⣿⠟   ⢪                                                        
+//                           ⢪⠁ ⢪⣿   ⠂⢿⡀   ⠊⣐       ⠋⠕       ⢀⣠⣸⣾⣿⣿⣿⣿⣿⣿⣿⡿⠇    ⡕                                                        
+//                           ⡾  ⢪⡕     ⠯⣐   ⠂⢵  ⣀⢰⣰⣐⡀⢀⣠⣰⣀⣀⣀⣸⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁    ⢨⠕                              ⢀                         
+//                          ⢠⡕  ⢪⡕      ⠊⢴⡀  ⠂⢯⣿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟      ⣪                         ⢀⡠⠘⠎⠃⠃⠃⠃⠌⠤⢐                     
+//                          ⣪⠕  ⢪⡕       ⠂⢽⡐        ⠫⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠗⣀⣠⡐    ⡿          ⠈⠁            ⡀⠇   ⣀⣀⣀    ⠉⠐                   Meow meow all these pictures
+//                          ⣿   ⢪⡕    ⠪⡿⠽⠼⠰⣿  ⣠⣰⣰⣀   ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠁   ⢀⡕            ⢀⣰⡹⠼⠜⠌⠏⠃⠍⠤⣀⠊  ⢠⡼⠇⠃⠃⠃⠍⠐   ⠊⡐                     are from the net yes yes 
+//                         ⢨⡿   ⢪⡕     ⢯⡐  ⢈⣸⣾⣿⣿⡿⠏⠏⠏⠁⠏⠋⠯⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⣼⣿⣕  ⢪⠁          ⢠⡾⠇         ⠂   ⢾           ⠁                       (for real, if you're the original artist,
+//                   ⣀⣀⣰⣰⡼⡾⠏⠁   ⢪⡕   ⣀⣠⡺⠝ ⣸⠟⠏⠏⠃         ⠂⠋⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣰⣀⣾           ⡾  ⣠⠌⠇⠃         ⠪⡔      ⡠   ⢪⣀⡠⠰⠰⠰⠰⢰⣀               and want attribution please tell me)
+//                    ⠂⠃⠋⢭⡕     ⢪⡕   ⢯⡁ ⢀⡾⠅          ⢨    ⠊⣿⣿⣿⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠐         ⢨⠅ ⢨⠁             ⠋⠰⣀⣀⣀⡠⠘⠁   ⠊⠁       ⠂⠎⢷⡁      
+//                     ⣠⣸⣗⡁     ⢪⡕  ⣠⠎ ⣺⠇         ⣰⡀ ⣮     ⠊⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣼⣰⣐⡀      ⣿  ⢪       ⠨                   ⢀⡸⠎⠏⠃⠋⠌⡀  ⠫⣴     
+//                       ⠃⡝     ⠊⡕⢀⡿⠁⢀⡾⠁          ⣿⡕ ⣿     ⡈⢯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡃⠃⠋⠏⠍⠄⠐  ⢫   ⠥⣀   ⣀⠘⠁                  ⢠⠗       ⡀  ⠊⡔    
+//                       ⢪⠅      ⢯⠕  ⣺⠅           ⣿⣿ ⢪     ⠫⡒⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡐       ⠪⡔    ⠂⠃⠃        ⣀⣠⡰⠜⠌⠌⢴⡀     ⢪       ⢀⠕   ⢪    
+//                       ⡟⣠⣐         ⡟            ⣿⣿⣴⣪⣔    ⣀⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀       ⢭            ⣠⠘⠇⠁      ⢭⡀    ⠊⢔     ⣀⠞    ⡞    
+//                      ⡪⣵⣿⣿⡕        ⠗           ⢀⣿⣿⣿⣿⣿⠯⠟⠯⣿⣿⣿⣿⣷⢯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡕        ⢥         ⢀⡺⠁          ⢵      ⠋⠌⠌⠌⠇⠁   ⣀⡞⠁    
+//                     ⢨⡿⠇⠁⢫⣿⡀        ⣰⣐        ⢠⣾⡟⠂⢿⣿⣿⣽⣰⣿⣿⣿⣿⢿⣿⠊⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡕         ⠡        ⡖            ⢪            ⣀⡰⠎⠁      
+//                     ⠖   ⢪⣿⣿⣴⣐⡀ ⢀⣀⣼⣼⣿⣼⣿⣼⣴⣰⣰⣴⣰⣾⣿⡿  ⠂⢿⣿⣿⣿⣿⣿⣿⣿⢪⡕ ⣿⣿⣿⡿⢯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿           ⠭⡀      ⠊⢐           ⢪           ⠋⠁         
+//                          ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟    ⠂⢿⣿⣿⣿⣿⡿⠅   ⣿⣿⣿⠅⢪⠕⢯⣿⣿⣿⣿⣿⣿⣿⡟⠁             ⠤⣐⡀     ⠃⠌⠠⡀       ⡚     ⣀⡀ ⣀     ⡀       
+//                          ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠗       ⣯⣿⣿⠇    ⣨⣿⡿⠅ ⠏ ⠂⣿⣿⣿⣿⣿⣿⠃⠏⢔              ⢪⣿⣵⣀      ⠂⠩⢐    ⢠⠕  ⢀⠜⠁    ⠂⠄   ⠪       
+//                          ⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢼⣿⣿⡿⠇        ⠃⠃⠋⠄    ⠋⠃      ⣾⣿⣿⡿⢿⣿⡐             ⢀⣀⣸⣿⣿⣿⣿⣽⣐      ⠂⠈⢐⣀⣠⠖   ⡔       ⢨    ⡀      
+//                        ⢀⣾⣿⠗⠣⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⣑⡋⢿⡓                         ⢨⣿⣿⣿⠅ ⠂⠋        ⢀⣠⣰⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⣐             ⠕       ⠪    ⠅      
+//                        ⠾⠇⠁  ⣿⡕⠋⢿⣿⣕⠂⢿⣿⣿⡏⠾⢴⣛⣤⣀                      ⣨⣿⣿⣿⡟       ⣀⣠⣸⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣵⡀           ⠈⠐          ⡊       
+//                             ⢪   ⠋⢿⣔⠂⢿⡿⠟⢴⣐ ⠃⠃⠁          ⠌ ⠃⠃     ⢀⢸⡿⠏⠃⠁   ⣀⣠⣸⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣐            ⠈  ⠌⠂   ⢀⠐        
+//                                    ⣀⣀⡀  ⢯⣽⣴⣐⡀                 ⣠⣘⣁⣀⣀⣀⣰⣰⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡼⠼⠜⠌⠴⢐⣀       ⣀⣀⡠⠰⠄⠁         
+//                                 ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽ ⡰         ⣀⣠⣰⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠁      ⠃⠃⠃⠃⠃⠃⠃               
+//                                 ⣺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⠂⠤⡀   ⠃⠃⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠇⠁                              
+//                                ⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡐⠴⣰⣽⢰⣰⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠗                                 
+//                                 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣴⣰⣀⠂⠯⣰⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁                                  
+//                                ⢀⣺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠗                                     
+//                              ⢀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠃⠁                                      
+//                             ⣨⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠇                                         
+//                            ⣨⣿⣿⣿⣿⠗ ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣯⣯⣿⣿⣿⣏⣃⣃⣳⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠇⠃                                            
+//                            ⣿⠟⠏⠃⠯⠐ ⠿⠯⢿⣿⣿⣿⣿⣿⣿⣳⣰⣰⣼⣾⠟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⠏⠏⠏⠏⠃⠃⠃                                                
+//                          ⡠⠆   ⣠⣰⣐    ⠂⢿⣿⡿⠟⠃⠁  ⠋⠁⠠⣿⣿⣿⣿⣿⠿⠿⠿⠿⢿⣿⣿⣟⣋⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁                                                           
+//              ⡀          ⢠⠅  ⢠⠗  ⠂⠭    ⠂⠇  ⢀⡸⠜⠄⢐  ⠂⢯⣿⣿⣰⣰⣸⣼⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡐                                                            
+//              ⠕  ⠬⠇⠃⠃⠃⠃⠁⠃⠊   ⢪     ⢕       ⣾⠁   ⢡   ⢯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽                                                            
+//              ⢨⠴⠐⠊⣠⠰⠰⠰⣀      ⠂⣕    ⡮      ⠠⡕    ⢨   ⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣕                                                           
+//              ⡟  ⢨⡗    ⠉⡐     ⠂⠬⠰⠰⠜⠁       ⢽⡀  ⢠⠖  ⣪⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡐                                                          
+//              ⢭  ⠪⣕     ⣿                   ⠃⠍⠎⠁ ⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀                                                         
+//              ⠂⢵  ⠊⢔   ⣨⠅     ⣠⠸⠌⠉⠈⠌⠰⣀          ⠎⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽                                                         
+//            ⣠⠰⠌⠎    ⠃⠏⠏⠁     ⣺⠅       ⠉⠤⡀        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣵                                                        
+//          ⢠⠆                ⢨⡕          ⠂⡐      ⢨⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡐                                                      
+//        ⢀ ⠇⢀  ⣠⣰⠰⣰⣀         ⣾⠁          ⡨⠁     ⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣐                                                     
+//        ⠂⠠⡰⠚ ⡺⠁   ⠂⢭⡀       ⣾       ⢀⡠⠘⠆      ⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣔                                                    
+//          ⠉⡐ ⠭⣀    ⢀⡕       ⢫⣐  ⣀⡰⠜⠆⠁       ⣀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡀                                                  
+//           ⠫⣐ ⠂⠏⠬⠰⠸⠎         ⠂⠃⠇⠁      ⣀⣀⣰⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡀                                                 
+//            ⠂⠍⢐                     ⣠⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡀                                                
+//               ⠂⠈⠤⠰⠰⠰⠸⠌⠌⠰⢀⡀     ⢀⣀⣰⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡀                                               
+//                          ⠂⠃⠃⠃⠃⠃⠃ ⠂⠋⢯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣵                                               
+//                                    ⠊⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠏⠅                                              
+//   
                     const SizedBox(height: 8),
                     const Divider(),
                     const SizedBox(height: 8),
                     const Text(
                       'This app uses the fonts INTER and BAGEL, which are licensed under the SIL Open Font License 1.1. You can view the license on the Google Fonts website.',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Divider(),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Current app version',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

@@ -21,21 +21,15 @@
 //   ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠋⠀⠀⠀⠀⠀⠀⠀
 // This app was made by a boykisser - Deal with it >:3
 //
+import 'package:catkeys/inc/nav.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:misskey_dart/misskey_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import '../inc/features.dart';
 import '../main/home.dart';
-
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarIconBrightness: Brightness.light, // Light icons on dark background
-    statusBarColor: Colors.transparent, // Make status bar transparent
-  ));
-  runApp(const AnnouncementsPage());
-}
 
 class AnnouncementsPage extends StatelessWidget {
   const AnnouncementsPage({super.key});
@@ -114,29 +108,6 @@ class _AnnouncementsHomePageState extends State<AnnouncementsHomePage> {
     }
   }
 
-  navHome() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HomePage(title: 'Catkeys')),
-    );
-  }
-
-  vibrateSelection() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? status = prefs.getBool('catkeys_haptics');
-    if (status == true) {
-      final hasCustomVibrationsSupport =
-          await Vibration.hasCustomVibrationsSupport();
-      if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-        Vibration.vibrate(duration: 50);
-      } else {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 50));
-        Vibration.vibrate();
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -157,7 +128,7 @@ class _AnnouncementsHomePageState extends State<AnnouncementsHomePage> {
               GestureDetector(
                 onTap: () {
                   vibrateSelection();
-                  navHome();
+                  navHome(context);
                 },
                 child: Icon(
                   Icons.arrow_back_ios_new_rounded,
