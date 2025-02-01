@@ -118,9 +118,9 @@ class _MyHomePageState extends State<MyHomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool catkeysInstanceExists = prefs.containsKey('catkeys_url');
     if (catkeysInstanceExists) {
-      //navHome(context);
+      navHome(context);
     } else {
-      //navSetup(context);
+      navSetup(context);
     }
   }
 
