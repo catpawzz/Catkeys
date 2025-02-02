@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       userJoined =
           (DateFormat('dd/MM/yyyy – kk:mm').format(res.createdAt)).toString();
       userBirthday = res.birthday != null
-          ? (DateFormat('dd/MM/yyyy – kk:mm').format(res.birthday!)).toString()
+          ? (DateFormat('dd/MM/yyyy').format(res.birthday!)).toString()
           : '-';
       userLocation = res.location.toString();
       userLang = res.lang.toString();
