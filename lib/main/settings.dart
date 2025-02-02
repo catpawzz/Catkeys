@@ -32,28 +32,8 @@ import 'package:vibration/vibration.dart';
 import '../inc/nav.dart';
 import '../main/home.dart';
 
-class Settings extends StatelessWidget {
-  const Settings({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return const  MaterialApp(
-          title: 'Settings',
-          themeMode: ThemeMode.system, // Use device's color scheme
-          home: SettingsPage(title: 'Settings'),
-        );
-      },
-    );
-  }
-}
-
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key, required this.title});
-
-  final String title;
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -190,7 +170,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               const SizedBox(width: 20),
               Text(
-                widget.title,
+                "Settings",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,

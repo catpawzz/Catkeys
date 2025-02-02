@@ -1,3 +1,4 @@
+import 'package:catkeys/internal/hashtag.dart';
 import 'package:catkeys/main/annoucements.dart';
 import 'package:catkeys/main/home.dart';
 import 'package:catkeys/main/settings.dart';
@@ -9,7 +10,7 @@ void navHome(BuildContext context) {
     context,
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          const HomePage(title: "Catkeys",),
+          const HomePage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
           opacity: animation,
@@ -27,7 +28,7 @@ void navSetup(BuildContext context) {
     context,
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          const SetupPage(title: "Setup",),
+          const SetupPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
           opacity: animation,
@@ -45,7 +46,7 @@ void navSettings(BuildContext context) {
     context,
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          const SettingsPage(title: "Settings",),
+          const SettingsPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
           opacity: animation,
@@ -64,6 +65,24 @@ void navAnnoucements(BuildContext context) {
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
           const AnnouncementsPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+      transitionDuration:
+          const Duration(milliseconds: 200), // Change the animation time here
+    ),
+  );
+}
+
+void navHashtag(BuildContext context, String hashtag) {
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          HashTagPage(hashtag: hashtag),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
           opacity: animation,

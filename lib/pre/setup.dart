@@ -29,49 +29,8 @@ import 'package:vibration/vibration.dart';
 import '../inc/nav.dart';
 import '../main/home.dart';
 
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarIconBrightness: Brightness.light, // Light icons on dark background
-    statusBarColor: Colors.transparent, // Make status bar transparent
-  ));
-  runApp(const Setup());
-}
-
-class Setup extends StatelessWidget {
-  const Setup({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return MaterialApp(
-          title: 'Setup',
-          themeMode: ThemeMode.system, // Use device's color scheme
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: lightDynamic?.harmonized() ??
-                ColorScheme.fromSeed(seedColor: Colors.purple),
-            fontFamily: 'Inter', // Set the font family to Inter
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: darkDynamic?.harmonized() ??
-                ColorScheme.fromSeed(
-                    seedColor: Colors.purple, brightness: Brightness.dark),
-            fontFamily: 'Inter',
-          ),
-          home: const SetupPage(title: 'Setup'),
-        );
-      },
-    );
-  }
-}
-
 class SetupPage extends StatefulWidget {
-  const SetupPage({super.key, required this.title});
-
-  final String title;
+  const SetupPage({super.key});
 
   @override
   State<SetupPage> createState() => _SetupPageState();
@@ -195,7 +154,7 @@ class _SetupPageState extends State<SetupPage> {
           backgroundColor:
               Theme.of(context).colorScheme.primary.withOpacity(0.1),
           title: Text(
-            widget.title,
+            "Setup",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.primary,

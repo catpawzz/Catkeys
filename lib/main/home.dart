@@ -42,39 +42,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
 import '../inc/nav.dart';
 import '../pre/setup.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return MaterialApp(
-          title: 'CatKeys',
-          themeMode: ThemeMode.dark,
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: darkDynamic?.harmonized() ??
-                ColorScheme.fromSeed(
-                    seedColor: Colors.purple, brightness: Brightness.dark),
-            fontFamily: 'Inter',
-          ),
-          home: const HomePage(title: 'CatKeys'),
-        );
-      },
-    );
-  }
-}
-
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -501,11 +473,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     SharedPreferences.getInstance().then((prefs) {
       prefs.remove('catkeys_url');
       prefs.remove('catkeys_token');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const SetupPage(title: 'CatKeys setup')),
-      );
+      navSetup(context);
     });
   }
 
@@ -614,7 +582,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.title,
+                "Catkeys",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,
@@ -893,8 +861,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                   if (post_url
                                                       .startsWith("#")) {
                                                     // Handle hashtag tap event here
-                                                    openLink(
-                                                        "https://$url/tags/${post_url.substring(1)}");
+                                                    navHashtag(context, post_url.substring(1));
                                                     // Navigate to a hashtag-specific screen or search
                                                   } else if (post_url
                                                       .startsWith("@")) {
