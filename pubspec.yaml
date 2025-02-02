@@ -40,6 +40,7 @@ dependencies:
   video_player: ^2.3.0
   blur: ^4.0.0
   flutter_displaymode: ^0.6.0
+  flutter_staggered_animations: ^1.0.0
 
 dependency_overrides:
   uuid: ^4.4.0

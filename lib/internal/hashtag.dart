@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:catkeys/inc/features.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,6 @@ class _HashTagPageState extends State<HashTagPage> {
       }),
     );
 
-
-
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as List;
       List<Map<String, dynamic>> fetchedPosts =
@@ -80,9 +79,7 @@ class _HashTagPageState extends State<HashTagPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        return Future.value(false);
-      },
+      onWillPop: () => Future.value(false),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
@@ -95,45 +92,46 @@ class _HashTagPageState extends State<HashTagPage> {
           title: Row(
             children: [
               GestureDetector(
-          onTap: () {
-            vibrateSelection();
-            navHome(context);
-          },
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+                onTap: () {
+                  vibrateSelection();
+                  navHome(context);
+                },
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
               const SizedBox(width: 20),
               Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "#${widget.hashtag}",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            Text(
-              'Showing ${posts} posts',
-              style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-          ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "#${widget.hashtag}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  Text(
+                    'Showing ${posts} posts',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
           actions: [
             IconButton(
               icon: Icon(
-          Icons.open_in_browser_rounded,
-          color: Theme.of(context).colorScheme.primary,
+                Icons.open_in_browser_rounded,
+                color: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () {
-          openLink('https://$url/tags/${widget.hashtag}');
+                vibrateSelection();
+                openLink('https://$url/tags/${widget.hashtag}');
               },
             ),
           ],
@@ -157,88 +155,102 @@ class _HashTagPageState extends State<HashTagPage> {
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(child: Text('No posts found.'));
             } else {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: snapshot.data!.map((post) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            post['user']['name'] ?? post['user']['username'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (post['text'] != null)
-                                MarkdownBody(
-                                  data: post['text'],
-                                  onTapLink: (text, post_url, title) {
-                                    if (post_url != null) {
-                                      vibrateSelection();
-                                      if (post_url.startsWith("#")) {
-                                        // Handle hashtag tap event here
-                                        navHashtag(
-                                            context, post_url.substring(1));
-                                        // Navigate to a hashtag-specific screen or search
-                                      } else if (post_url.startsWith("@")) {
-                                        // Handle hashtag tap event here
-                                        openLink(
-                                            "https://cat-space.net/$post_url");
-                                        // Navigate to a hashtag-specific screen or search
-                                      } else {
-                                        openLink(
-                                            post_url); // Handle normal URLs
-                                      }
-                                    }
-                                  },
-                                  styleSheet: MarkdownStyleSheet(
-                                    p: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                    a: TextStyle(
-                                      // Custom link style
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary, // Links in green
-                                    ),
-                                  ),
-                                ),
-                              if (post['files'] != null &&
-                                  post['files'].isNotEmpty)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Wrap(
-                                    spacing: 8.0,
-                                    runSpacing: 8.0,
-                                    children: post['files'].map<Widget>((file) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          vibrateSelection();
-                                          openLink(file['url']);
-                                        },
-                                        child: Image.network(
-                                          file['url'],
-                                          fit: BoxFit.cover,
-                                          height: 150,
-                                          width: 150,
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                            ],
+              return AnimationLimiter(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: AnimationConfiguration.synchronized(
+                    duration: const Duration(milliseconds: 700),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: AnimationConfiguration.toStaggeredList(
+                        duration: const Duration(milliseconds: 700),
+                        childAnimationBuilder: (widget) => SlideAnimation(
+                          horizontalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: widget,
                           ),
                         ),
-                        const Divider(),
-                      ],
-                    );
-                  }).toList(),
+                        children: snapshot.data!.asMap().entries.map((entry) {
+                          final post = entry.value;
+                          return Column(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  post['user']['name'] ??
+                                      post['user']['username'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (post['text'] != null)
+                                      MarkdownBody(
+                                        data: post['text'],
+                                        onTapLink: (text, post_url, title) {
+                                          if (post_url != null) {
+                                            vibrateSelection();
+                                            if (post_url.startsWith("#")) {
+                                              navHashtag(context,
+                                                  post_url.substring(1));
+                                            } else if (post_url
+                                                .startsWith("@")) {
+                                              openLink(
+                                                  "https://cat-space.net/$post_url");
+                                            } else {
+                                              openLink(post_url);
+                                            }
+                                          }
+                                        },
+                                        styleSheet: MarkdownStyleSheet(
+                                          p: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                          a: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    if (post['files'] != null &&
+                                        post['files'].isNotEmpty)
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: Wrap(
+                                          spacing: 8.0,
+                                          runSpacing: 8.0,
+                                          children: post['files']
+                                              .map<Widget>((file) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                vibrateSelection();
+                                                openLink(file['url']);
+                                              },
+                                              child: Image.network(
+                                                file['url'],
+                                                fit: BoxFit.cover,
+                                                height: 150,
+                                                width: 150,
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              const Divider(),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
                 ),
               );
             }
