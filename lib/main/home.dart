@@ -285,7 +285,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         userJoined =
             (DateFormat('dd/MM/yyyy – kk:mm').format(res.createdAt)).toString();
         userBirthday = res.birthday != null
-            ? (DateFormat('dd/MM/yyyy – kk:mm').format(res.birthday!))
+            ? (DateFormat('dd/MM/yyyy').format(res.birthday!))
                 .toString()
             : '-';
         userLocation = res.location.toString();
@@ -809,7 +809,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
                               return const Center(
-                                  child: Text('No data available (check your server version and compatibility)'));
+                                  child: Text(
+                                      'No data available (check your server version and compatibility)'));
                             }
                             return ListView.builder(
                               physics: const AlwaysScrollableScrollPhysics(),
@@ -1647,37 +1648,51 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           itemCount: driveItems.length,
                           itemBuilder: (context, index) {
                             final driveItem = driveItems[index];
-                            return Column(
-                              children: [
-                                ListTile(
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: driveItem.thumbnailUrl != null &&
-                                            driveItem.thumbnailUrl!.isNotEmpty
-                                        ? Image.network(
-                                            driveItem.thumbnailUrl!,
-                                            fit: BoxFit.cover,
-                                            width: 50,
-                                            height: 50,
-                                          )
-                                        : Icon(
-                                            Icons.insert_drive_file_rounded,
-                                            size: 50,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          ),
+
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 375),
+                              child: SlideAnimation(
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: Column(
+                                    children: [
+                                      ListTile(
+                                        leading: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child:
+                                              driveItem.thumbnailUrl != null &&
+                                                      driveItem.thumbnailUrl!
+                                                          .isNotEmpty
+                                                  ? Image.network(
+                                                      driveItem.thumbnailUrl!,
+                                                      fit: BoxFit.cover,
+                                                      width: 50,
+                                                      height: 50,
+                                                    )
+                                                  : Icon(
+                                                      Icons
+                                                          .insert_drive_file_rounded,
+                                                      size: 50,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    ),
+                                        ),
+                                        title: Text(driveItem.name),
+                                        subtitle: Text(
+                                            '${(driveItem.size / (1024 * 1024)).toStringAsFixed(2)} MB - ${DateFormat('dd/MM/yyyy – kk:mm').format(driveItem.createdAt)}'),
+                                        onTap: () {
+                                          vibrateSelection();
+                                          openLink(driveItem.url);
+                                        },
+                                      ),
+                                      const Divider(),
+                                    ],
                                   ),
-                                  title: Text(driveItem.name),
-                                  subtitle: Text(
-                                      '${(driveItem.size / (1024 * 1024)).toStringAsFixed(2)} MB - ${DateFormat('dd/MM/yyyy – kk:mm').format(driveItem.createdAt)}'),
-                                  onTap: () {
-                                    vibrateSelection();
-                                    openLink(driveItem.url);
-                                  },
                                 ),
-                                const Divider(),
-                              ],
+                              ),
                             );
                           },
                         );
