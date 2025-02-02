@@ -1,8 +1,8 @@
 name: catkeys
-description: "French Femboi's custom Misskey client."
+description: "Catpawzs custom Misskey client"
 publish_to: 'none' 
 
-version: 0.0.10-alpha+010
+version: 0.0.11-alpha+011
 
 environment:
   sdk: ^3.5.1
