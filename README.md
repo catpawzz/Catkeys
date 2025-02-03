@@ -7,6 +7,10 @@ You can also find this app on the play store! [Play Store](https://play.google.c
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N2FINT7)
 
+## Example instances
+
+The example instance use in the screenshots and for testing is located at [cat-space.net](https://cat-space.net), if you want your instance to be featured here don't hesitate to send me an email or to message me on any of my socials :3
+
 ## Built With
 
   - [Contributor Covenant](https://www.contributor-covenant.org/) - Used
