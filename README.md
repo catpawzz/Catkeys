@@ -1,7 +1,9 @@
 # Catkeys
 I developed this client because I couldn't find any Misskey client app that met my preferences. It's still in very early development and therefore I would recommend not to use it before a real version comes out :<
 
-You can also find this app on the play store! [Play Store](https://play.google.com/store/apps/details?id=com.catpawz.catkeys)
+You can also find this app on the play store! [Play Store](https://play.google.com/store/apps/details?id=com.catpawz.catkeys) 
+
+!!THE PLAY STORE LINK IS CURRENTLY NOT WORKING DUE TO SOME ISSUES WITH GOOGLE PLAY REQUIREMENTS!!
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N2FINT7)
 
@@ -30,6 +32,10 @@ We use [GIT](https://git-scm.com/) for versioning and code review.
 This project is licensed under the [BSD-3](LICENSE)
 CLAUSE LICENSE - see the [LICENSE.md](LICENSE) file for
 details
+
+## Showcase (gifs)
+
+<img src="https://github.com/user-attachments/assets/97b2dde6-33e2-4f09-b060-c5822d34f032" width="300">
 
 ## Repo activity
 
