@@ -36,6 +36,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,6 +94,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   String userLang = '-';
   String userStatus = '-';
   String userID = '';
+  String appVersion = '-';
+
+
+  void fetchAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appVersion = packageInfo.version;
+    });
+  }
 
   Map<String, String> _customEmojis = {};
 
@@ -627,10 +637,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
               Text(
-                'Connected to $url', // Add your subtitle text here
+                'App ver. $appVersion | Connected to $url', // Add your subtitle text here
                 style: TextStyle(
                   fontSize: 14,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
                 ),
               ),
             ],
