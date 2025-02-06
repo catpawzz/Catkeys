@@ -147,6 +147,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    fetchAppVersion();
     fetchData();
 
     tabs1.addListener(() {
@@ -637,7 +638,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
               Text(
-                'App ver. $appVersion | Connected to $url', // Add your subtitle text here
+                'Ver. $appVersion | Connected to $url', // Add your subtitle text here
                 style: TextStyle(
                   fontSize: 14,
                   color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
