@@ -141,8 +141,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/catkeys_downloaded_video_${DateTime.now().millisecondsSinceEpoch}.mp4';
+      final directory = await getExternalStorageDirectory();
+      final downloadsDirectory = Directory('${directory!.path}/Download');
+      if (!await downloadsDirectory.exists()) {
+        await downloadsDirectory.create(recursive: true);
+      }
+      final filePath = '${downloadsDirectory.path}/catkeys_downloaded_video_${DateTime.now().millisecondsSinceEpoch}.mp4';
       final file = File(filePath);
       await file.writeAsBytes(response.bodyBytes);
 

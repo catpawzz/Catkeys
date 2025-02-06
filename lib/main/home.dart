@@ -23,6 +23,7 @@
 //
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:catkeys/inc/features.dart';
@@ -198,9 +199,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Future<String?> downloadImage(String url) async {
     try {
       var dio = Dio();
-      var dir = await getApplicationDocumentsDirectory();
+      var dir = await getExternalStorageDirectory();
+      var downloadsDir = Directory('${dir!.path}/Download');
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
       var filePath =
-          '${dir.path}/catkeys_downloaded_image_${DateTime.now().millisecondsSinceEpoch}.png';
+          '${downloadsDir.path}/catkeys_downloaded_image_${DateTime.now().millisecondsSinceEpoch}.png';
       await dio.download(url, filePath);
       Fluttertoast.showToast(
         msg: 'Image downloaded successfully!',
@@ -1747,7 +1752,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           openLink(driveItem.url);
                                         },
                                       ),
-                                      const Divider(),
+                                      const Divider(height: 1,thickness: 1,),
                                     ],
                                   ),
                                 ),
