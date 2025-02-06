@@ -21,9 +21,12 @@
 //   ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠋⠀⠀⠀⠀⠀⠀⠀
 // This app was made by a boykisser - Deal with it >:3
 //
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vibration/vibration.dart';
 import 'package:video_player/video_player.dart';
 
 import '../inc/features.dart';
@@ -133,6 +136,26 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     }
   }
 
+  void _downloadVideo() async {
+    final url = widget.videoUrl;
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/catkeys_downloaded_video_${DateTime.now().millisecondsSinceEpoch}.mp4';
+      final file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Video downloaded to $filePath')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to download video')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -175,7 +198,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     _buildTopBar(context),
                     _buildControlsOverlay(),
                   ],
-                  if (_controller.value.position == _controller.value.duration) 
+                  if (_controller.value.position == _controller.value.duration)
                     _buildRepeatButton(), // Show repeat button at the end
                 ],
               ),
@@ -201,10 +224,17 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.close, color: Colors.white),
+              icon: const Icon(Icons.close_rounded, color: Colors.white),
               onPressed: () {
                 vibrateSelection();
                 Navigator.pop(context); // Close the video page
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.download_rounded, color: Colors.white),
+              onPressed: () async {
+                vibrateSelection();
+
               },
             ),
           ],
@@ -241,7 +271,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                   vibrateSelection();
                   if (mounted) {
                     setState(() {
-                      if (_controller.value.position != _controller.value.duration) {
+                      if (_controller.value.position !=
+                          _controller.value.duration) {
                         _isPlaying = !_isPlaying;
                         _isPlaying ? _controller.play() : _controller.pause();
                       }

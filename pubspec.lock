@@ -349,6 +349,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.4"
+  gaimon:
+    dependency: "direct main"
+    description:
+      name: gaimon
+      sha256: "4194b979dc84b2c5135dba261a0a1f810e4dff25a87bcb53cca53fb585438307"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   html:
     dependency: transitive
     description:
@@ -939,22 +947,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  vibration:
-    dependency: "direct main"
-    description:
-      name: vibration
-      sha256: f0af02af2d63132135ae0332a3e54d5de718e214ee94c4f082176ef6ce624a4b
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
-  vibration_platform_interface:
-    dependency: transitive
-    description:
-      name: vibration_platform_interface
-      sha256: f66b39aab2447038978c16f3d6f77228e49ef5717556e3da02313e044e4a7600
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
   video_player:
     dependency: "direct main"
     description:

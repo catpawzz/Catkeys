@@ -25,7 +25,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vibration/vibration.dart';
+import '../inc/features.dart';
 import '../inc/nav.dart';
 import '../main/home.dart';
 
@@ -111,30 +111,6 @@ class _SetupPageState extends State<SetupPage> {
     await prefs.setInt('catkeys_posts_shows', 100);
     await prefs.setBool('catkeys_haptics', true);
     navHome(context);
-  }
-
-  vibrateSelection() async {
-    final hasCustomVibrationsSupport =
-        await Vibration.hasCustomVibrationsSupport();
-    if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-      Vibration.vibrate(duration: 50);
-    } else {
-      Vibration.vibrate();
-      await Future.delayed(const Duration(milliseconds: 50));
-      Vibration.vibrate();
-    }
-  }
-
-  vibrateError() async {
-    final hasCustomVibrationsSupport =
-        await Vibration.hasCustomVibrationsSupport();
-    if (hasCustomVibrationsSupport != null && hasCustomVibrationsSupport) {
-      Vibration.vibrate(duration: 200);
-    } else {
-      Vibration.vibrate();
-      await Future.delayed(const Duration(milliseconds: 200));
-      Vibration.vibrate();
-    }
   }
 
   @override

@@ -36,11 +36,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:misskey_dart/misskey_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vibration/vibration.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../inc/nav.dart';
@@ -118,8 +119,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         host: url,
         token: token,
       );
-      lookupAccount();
-      _loadEmojis();
+      try {
+        await lookupAccount();
+        await _loadEmojis();
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: 'Network error: Unable to fetch data!',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          textColor: Theme.of(context).colorScheme.onErrorContainer,
+        );
+      }
     }
   }
 
@@ -171,6 +182,33 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     setState(() {
       _customEmojis = emojis; // Update the state with the fetched emojis
     });
+  }
+
+  Future<String?> downloadImage(String url) async {
+    try {
+      var dio = Dio();
+      var dir = await getApplicationDocumentsDirectory();
+      var filePath =
+          '${dir.path}/catkeys_downloaded_image_${DateTime.now().millisecondsSinceEpoch}.png';
+      await dio.download(url, filePath);
+      Fluttertoast.showToast(
+        msg: 'Image downloaded successfully!',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        textColor: Theme.of(context).colorScheme.onPrimaryContainer,
+      );
+      return filePath;
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'There was an error while downloading the image!',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        backgroundColor: Theme.of(context).colorScheme.onErrorContainer,
+        textColor: Theme.of(context).colorScheme.error,
+      );
+      return null;
+    }
   }
 
   void _showEmojiPicker(BuildContext context) {
@@ -285,8 +323,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         userJoined =
             (DateFormat('dd/MM/yyyy – kk:mm').format(res.createdAt)).toString();
         userBirthday = res.birthday != null
-            ? (DateFormat('dd/MM/yyyy').format(res.birthday!))
-                .toString()
+            ? (DateFormat('dd/MM/yyyy').format(res.birthday!)).toString()
             : '-';
         userLocation = res.location.toString();
         userLang = res.lang.toString();
@@ -1027,6 +1064,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                                 onPressed: () {
                                                                                   vibrateSelection();
                                                                                   Navigator.of(context).pop();
+                                                                                },
+                                                                              ),
+                                                                            ),
+                                                                            Positioned(
+                                                                              top: 16,
+                                                                              right: 16,
+                                                                              child: IconButton(
+                                                                                icon: const Icon(Icons.download_rounded, color: Colors.white),
+                                                                                onPressed: () {
+                                                                                  vibrateSelection();
+                                                                                  downloadImage(file.url);
                                                                                 },
                                                                               ),
                                                                             ),
