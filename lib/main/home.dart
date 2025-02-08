@@ -344,11 +344,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         userLocation = res.location.toString();
         userLang = res.lang.toString();
       });
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error: $e');
-      } // Catch and print any errors
-    }
+    } catch (e) {}
   }
 
   @override
@@ -451,16 +447,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Future<List<DriveFile>> fetchDriveItems() async {
+    if (currentPageIndex != 2) {
+      return []; // Return an empty list if currentPageIndex is not 2
+    }
     try {
+      await Future.delayed(const Duration(seconds: 1));
       final response = await client.drive.files.files(
         DriveFilesRequest(
           limit: posts,
         ),
       );
       if (kDebugMode) {
-        print('------------------ DRIVE DEBUG ------------------');
-        print(response);
-        print('------------------ DRIVE DEBUG ------------------');
+        //print('------------------ DRIVE DEBUG ------------------');
+        //print(response);
+        //print('------------------ DRIVE DEBUG ------------------');
       }
       double totalSize = response.fold(0, (sum, file) => sum + file.size);
       setState(() {
@@ -474,16 +474,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Future<List<Note>> fetchNotesHome() async {
+    if (tabIndex != 0 || currentPageIndex != 0) {
+      return []; // Return an empty list if tabIndex is not 0
+    }
     try {
+      await Future.delayed(const Duration(seconds: 1));
       final response = await client.notes.homeTimeline(
         NotesTimelineRequest(
           limit: posts,
         ),
       );
       if (kDebugMode) {
-        print('------------------ HOME DEBUG ------------------');
-        print(response);
-        print('------------------ HOME DEBUG ------------------');
+        //print('------------------ HOME DEBUG ------------------');
+        //print(response);
+        //print('------------------ HOME DEBUG ------------------');
+      }
+      // Adding a small delay between fetching each post
+      for (var note in response) {
+        await Future.delayed(const Duration(milliseconds: 100));
       }
       return response.toList();
     } catch (e) {
@@ -492,16 +500,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Future<List<Note>> fetchNotesLocal() async {
+    if (tabIndex != 1 || currentPageIndex != 0) {
+      return []; // Return an empty list if tabIndex is not 0
+    }
     try {
+      await Future.delayed(const Duration(seconds: 1));
       final response = await client.notes.localTimeline(
         NotesLocalTimelineRequest(
           limit: posts,
         ),
       );
       if (kDebugMode) {
-        print('------------------ LOCAL DEBUG ------------------');
-        print(response);
-        print('------------------ LOCAL DEBUG ------------------');
+        //print('------------------ HOME DEBUG ------------------');
+        //print(response);
+        //print('------------------ HOME DEBUG ------------------');
+      }
+      // Adding a small delay between fetching each post
+      for (var note in response) {
+        await Future.delayed(const Duration(milliseconds: 100));
       }
       return response.toList();
     } catch (e) {
@@ -510,16 +526,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Future<List<Note>> fetchNotesGlobal() async {
+    if (tabIndex != 2 || currentPageIndex != 0) {
+      return []; // Return an empty list if tabIndex is not 0
+    }
     try {
+      await Future.delayed(const Duration(seconds: 1));
       final response = await client.notes.globalTimeline(
         NotesGlobalTimelineRequest(
           limit: posts,
         ),
       );
       if (kDebugMode) {
-        print('------------------ GLOBAL DEBUG ------------------');
-        print(response);
-        print('------------------ GLOBAL DEBUG ------------------');
+        //print('------------------ HOME DEBUG ------------------');
+        //print(response);
+        //print('------------------ HOME DEBUG ------------------');
+      }
+      // Adding a small delay between fetching each post
+      for (var note in response) {
+        await Future.delayed(const Duration(milliseconds: 100));
       }
       return response.toList();
     } catch (e) {
