@@ -451,7 +451,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       return []; // Return an empty list if currentPageIndex is not 2
     }
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 100));
       final response = await client.drive.files.files(
         DriveFilesRequest(
           limit: posts,
@@ -478,7 +478,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       return []; // Return an empty list if tabIndex is not 0
     }
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 100));
       final response = await client.notes.homeTimeline(
         NotesTimelineRequest(
           limit: posts,
@@ -504,7 +504,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       return []; // Return an empty list if tabIndex is not 0
     }
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 100));
       final response = await client.notes.localTimeline(
         NotesLocalTimelineRequest(
           limit: posts,
@@ -530,7 +530,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       return []; // Return an empty list if tabIndex is not 0
     }
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 100));
       final response = await client.notes.globalTimeline(
         NotesGlobalTimelineRequest(
           limit: posts,

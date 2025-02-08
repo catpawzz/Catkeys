@@ -87,6 +87,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  String connectingStatus = 'Welcome!';
+
   @override
   void initState() {
     super.initState();
@@ -110,7 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> initializeWindow(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 2));
+    connectingStatus = 'Connecting...';
+    await Future.delayed(const Duration(milliseconds: 700));
     checkData();
   }
 
@@ -230,6 +233,15 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.secondary,
+                fontWeight: FontWeight.w500
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              connectingStatus,
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).colorScheme.secondary.withOpacity(0.6),
                 fontWeight: FontWeight.w500
               ),
             ),
