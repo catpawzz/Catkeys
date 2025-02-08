@@ -930,362 +930,665 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           color: Theme.of(context)
                                               .colorScheme
                                               .error,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Text(
+                                        'HasData: ${!snapshot.hasData}\nSnapShot: ${snapshot.data}',
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          vibrateSelection();
+                                          refreshNotesD();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          backgroundColor: Colors.transparent,
+                                          side: BorderSide(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary),
+                                          minimumSize:
+                                              const Size(double.infinity, 40),
+                                        ),
+                                        child: const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.refresh_rounded),
+                                            SizedBox(width: 8),
+                                            Text('Reload'),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                               );
-                            }
-                            return ListView.builder(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                final note = snapshot.data![index];
-                                return AnimationConfiguration.staggeredList(
-                                  position:
-                                      index, // Make sure to pass the index from parent ListView/Column
-                                  duration: const Duration(milliseconds: 500),
-                                  child: SlideAnimation(
-                                    verticalOffset: 50.0,
-                                    child: FadeInAnimation(
-                                      child: Column(
-                                        children: [
-                                          ListTile(
-                                            title: Text(
-                                              note.user.name ??
-                                                  note.user.username,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
+                            } else {
+                              return ListView.builder(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  final note = snapshot.data![index];
+                                  return AnimationConfiguration.staggeredList(
+                                    position:
+                                        index, // Make sure to pass the index from parent ListView/Column
+                                    duration: const Duration(milliseconds: 500),
+                                    child: SlideAnimation(
+                                      verticalOffset: 50.0,
+                                      child: FadeInAnimation(
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              title: Text(
+                                                note.user.name ??
+                                                    note.user.username,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
                                               ),
-                                            ),
-                                            subtitle: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                if (note.text != null ||
-                                                    note.renote?.text != null)
-                                                  MarkdownBody(
-                                                    data: note.text
-                                                                ?.isNotEmpty ==
-                                                            true
-                                                        ? _convertHUToLinks(
-                                                            _replaceEmojis(
-                                                                note.text ??
-                                                                    ''))
-                                                        : _convertHUToLinks(
-                                                            _replaceEmojis(note
-                                                                    .renote
-                                                                    ?.text ??
-                                                                'No content available')),
-                                                    styleSheet:
-                                                        MarkdownStyleSheet(
-                                                      p: const TextStyle(
-                                                        color: Colors.white,
+                                              subtitle: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (note.text != null ||
+                                                      note.renote?.text != null)
+                                                    MarkdownBody(
+                                                      data: note.text
+                                                                  ?.isNotEmpty ==
+                                                              true
+                                                          ? _convertHUToLinks(
+                                                              _replaceEmojis(
+                                                                  note.text ??
+                                                                      ''))
+                                                          : _convertHUToLinks(
+                                                              _replaceEmojis(note
+                                                                      .renote
+                                                                      ?.text ??
+                                                                  'No content available')),
+                                                      styleSheet:
+                                                          MarkdownStyleSheet(
+                                                        p: const TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                        a: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                        ),
                                                       ),
-                                                      a: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .primary,
-                                                      ),
-                                                    ),
-                                                    onTapLink: (text, post_url,
-                                                        title) {
-                                                      if (post_url != null) {
-                                                        vibrateSelection();
-                                                        if (post_url
-                                                            .startsWith("#")) {
-                                                          navHashtag(
-                                                              context,
-                                                              post_url
-                                                                  .substring(
-                                                                      1));
-                                                        } else if (post_url
-                                                            .startsWith("@")) {
-                                                          openLink(
-                                                              "https://$url/$post_url");
-                                                        } else {
-                                                          openLink(post_url);
+                                                      onTapLink: (text,
+                                                          post_url, title) {
+                                                        if (post_url != null) {
+                                                          vibrateSelection();
+                                                          if (post_url
+                                                              .startsWith(
+                                                                  "#")) {
+                                                            navHashtag(
+                                                                context,
+                                                                post_url
+                                                                    .substring(
+                                                                        1));
+                                                          } else if (post_url
+                                                              .startsWith(
+                                                                  "@")) {
+                                                            openLink(
+                                                                "https://$url/$post_url");
+                                                          } else {
+                                                            openLink(post_url);
+                                                          }
                                                         }
-                                                      }
-                                                    },
-                                                    imageBuilder:
-                                                        (uri, title, alt) {
-                                                      return Image.network(
-                                                        uri.toString(),
-                                                        width: 20,
-                                                        height: 20,
-                                                        fit: BoxFit.contain,
-                                                      );
-                                                    },
-                                                  ),
-                                                if (note.files != null &&
-                                                    note.files!.isNotEmpty)
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 8.0),
-                                                    child: Wrap(
-                                                      spacing: 8.0,
-                                                      runSpacing: 8.0,
-                                                      children: note.files!
-                                                          .map((file) {
-                                                        return FutureBuilder<
-                                                            bool>(
-                                                          future: isVideoFile(
-                                                              file.url),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return const CircularProgressIndicator();
-                                                            } else if (snapshot
-                                                                .hasError) {
-                                                              return const Icon(
-                                                                  Icons.error);
-                                                            } else if (snapshot
-                                                                    .hasData &&
-                                                                snapshot
-                                                                    .data!) {
-                                                              return GestureDetector(
-                                                                onTap: () {
-                                                                  vibrateSelection();
-                                                                  Navigator
-                                                                      .push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder: (context) =>
-                                                                          VideoPlayerPage(
-                                                                              videoUrl: file.url),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                                child: Stack(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Container(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          right:
-                                                                              3.0),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .primary,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(4.0),
+                                                      },
+                                                      imageBuilder:
+                                                          (uri, title, alt) {
+                                                        return Image.network(
+                                                          uri.toString(),
+                                                          width: 20,
+                                                          height: 20,
+                                                          fit: BoxFit.contain,
+                                                        );
+                                                      },
+                                                    ),
+                                                  if (note.files != null &&
+                                                      note.files!.isNotEmpty)
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 8.0),
+                                                      child: Wrap(
+                                                        spacing: 8.0,
+                                                        runSpacing: 8.0,
+                                                        children: note.files!
+                                                            .map((file) {
+                                                          return FutureBuilder<
+                                                              bool>(
+                                                            future: isVideoFile(
+                                                                file.url),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return const CircularProgressIndicator();
+                                                              } else if (snapshot
+                                                                  .hasError) {
+                                                                return const Icon(
+                                                                    Icons
+                                                                        .error);
+                                                              } else if (snapshot
+                                                                      .hasData &&
+                                                                  snapshot
+                                                                      .data!) {
+                                                                return GestureDetector(
+                                                                  onTap: () {
+                                                                    vibrateSelection();
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                VideoPlayerPage(videoUrl: file.url),
                                                                       ),
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Icon(
-                                                                            Icons.movie_rounded,
+                                                                    );
+                                                                  },
+                                                                  child: Stack(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Container(
+                                                                        padding: const EdgeInsets
+                                                                            .only(
+                                                                            right:
+                                                                                3.0),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          border:
+                                                                              Border.all(
                                                                             color:
                                                                                 Theme.of(context).colorScheme.primary,
+                                                                            width:
+                                                                                1.0,
                                                                           ),
-                                                                          Text(
-                                                                            'Click to open attached video',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: 12,
-                                                                              color: Theme.of(context).colorScheme.primary,
-                                                                              fontWeight: FontWeight.bold,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            } else {
-                                                              return GestureDetector(
-                                                                onTap: () {
-                                                                  vibrateSelection();
-                                                                  showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return Material(
-                                                                        color: Colors
-                                                                            .transparent,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(4.0),
+                                                                        ),
                                                                         child:
-                                                                            Stack(
+                                                                            Row(
                                                                           children: [
-                                                                            BackdropFilter(
-                                                                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                                                              child: Container(
-                                                                                width: MediaQuery.of(context).size.width,
-                                                                                height: MediaQuery.of(context).size.height,
-                                                                              ),
+                                                                            Icon(
+                                                                              Icons.movie_rounded,
+                                                                              color: Theme.of(context).colorScheme.primary,
                                                                             ),
-                                                                            InteractiveViewer(
-                                                                              minScale: 0.8,
-                                                                              maxScale: 4.0,
-                                                                              child: Center(
-                                                                                child: Image.network(
-                                                                                  file.url,
-                                                                                  fit: BoxFit.contain,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            Positioned(
-                                                                              top: 16,
-                                                                              left: 16,
-                                                                              child: IconButton(
-                                                                                icon: const Icon(Icons.close, color: Colors.white),
-                                                                                onPressed: () {
-                                                                                  vibrateSelection();
-                                                                                  Navigator.of(context).pop();
-                                                                                },
-                                                                              ),
-                                                                            ),
-                                                                            Positioned(
-                                                                              top: 16,
-                                                                              right: 16,
-                                                                              child: IconButton(
-                                                                                icon: const Icon(Icons.download_rounded, color: Colors.white),
-                                                                                onPressed: () {
-                                                                                  vibrateSelection();
-                                                                                  downloadImage(file.url);
-                                                                                },
+                                                                            Text(
+                                                                              'Click to open attached video',
+                                                                              style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Theme.of(context).colorScheme.primary,
+                                                                                fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
                                                                           ],
                                                                         ),
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .colorScheme
-                                                                          .primary,
-                                                                      width:
-                                                                          1.0,
-                                                                    ),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            8.0),
+                                                                      ),
+                                                                    ],
                                                                   ),
+                                                                );
+                                                              } else {
+                                                                return GestureDetector(
+                                                                  onTap: () {
+                                                                    vibrateSelection();
+                                                                    showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return Material(
+                                                                          color:
+                                                                              Colors.transparent,
+                                                                          child:
+                                                                              Stack(
+                                                                            children: [
+                                                                              BackdropFilter(
+                                                                                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                                                                child: Container(
+                                                                                  width: MediaQuery.of(context).size.width,
+                                                                                  height: MediaQuery.of(context).size.height,
+                                                                                ),
+                                                                              ),
+                                                                              InteractiveViewer(
+                                                                                minScale: 0.8,
+                                                                                maxScale: 4.0,
+                                                                                child: Center(
+                                                                                  child: Image.network(
+                                                                                    file.url,
+                                                                                    fit: BoxFit.contain,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Positioned(
+                                                                                top: 16,
+                                                                                left: 16,
+                                                                                child: IconButton(
+                                                                                  icon: const Icon(Icons.close, color: Colors.white),
+                                                                                  onPressed: () {
+                                                                                    vibrateSelection();
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                              Positioned(
+                                                                                top: 16,
+                                                                                right: 16,
+                                                                                child: IconButton(
+                                                                                  icon: const Icon(Icons.download_rounded, color: Colors.white),
+                                                                                  onPressed: () {
+                                                                                    vibrateSelection();
+                                                                                    downloadImage(file.url);
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
                                                                   child:
-                                                                      ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            7.0),
-                                                                    child: Image
-                                                                        .network(
-                                                                      file.url,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      height:
-                                                                          150,
-                                                                      width:
-                                                                          150,
+                                                                      Container(
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .primary,
+                                                                        width:
+                                                                            1.0,
+                                                                      ),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              8.0),
+                                                                    ),
+                                                                    child:
+                                                                        ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              7.0),
+                                                                      child: Image
+                                                                          .network(
+                                                                        file.url,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height:
+                                                                            150,
+                                                                        width:
+                                                                            150,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              );
-                                                            }
-                                                          },
-                                                        );
-                                                      }).toList(),
+                                                                );
+                                                              }
+                                                            },
+                                                          );
+                                                        }).toList(),
+                                                      ),
                                                     ),
-                                                  ),
-                                              ],
-                                            ),
-                                            leading: GestureDetector(
-                                              onTap: () {
-                                                vibrateSelection();
-                                                openProfile(note.userId);
-                                                navProfile();
-                                              },
-                                              child: CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    note.user.avatarUrl
-                                                        .toString()),
+                                                ],
+                                              ),
+                                              leading: GestureDetector(
+                                                onTap: () {
+                                                  vibrateSelection();
+                                                  openProfile(note.userId);
+                                                  navProfile();
+                                                },
+                                                child: CircleAvatar(
+                                                  backgroundImage: NetworkImage(
+                                                      note.user.avatarUrl
+                                                          .toString()),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          AnimationLimiter(
-                                            child: Row(
-                                              children: AnimationConfiguration
-                                                  .toStaggeredList(
-                                                duration: const Duration(
-                                                    milliseconds: 500),
-                                                childAnimationBuilder:
-                                                    (widget) => SlideAnimation(
-                                                  horizontalOffset: 50.0,
-                                                  child: FadeInAnimation(
-                                                      child: widget),
-                                                ),
-                                                children: [
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.repeat_rounded,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
-                                                    ),
-                                                    onPressed: () {
-                                                      vibrateSelection();
-                                                      repostNote(note.id);
-                                                    },
+                                            AnimationLimiter(
+                                              child: Row(
+                                                children: AnimationConfiguration
+                                                    .toStaggeredList(
+                                                  duration: const Duration(
+                                                      milliseconds: 500),
+                                                  childAnimationBuilder:
+                                                      (widget) =>
+                                                          SlideAnimation(
+                                                    horizontalOffset: 50.0,
+                                                    child: FadeInAnimation(
+                                                        child: widget),
                                                   ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons
-                                                          .open_in_browser_rounded,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
-                                                    ),
-                                                    onPressed: () async {
-                                                      vibrateSelection();
-                                                      openLink(
-                                                          'https://$url/notes/${note.id}');
-                                                    },
-                                                  ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.share,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
-                                                    ),
-                                                    onPressed: () async {
-                                                      vibrateSelection();
-                                                      Share.share(
-                                                          'https://$url/notes/${note.id}');
-                                                    },
-                                                  ),
-                                                  if (note.user.username ==
-                                                      userHandle)
+                                                  children: [
                                                     IconButton(
                                                       icon: Icon(
-                                                        Icons.delete_rounded,
+                                                        Icons.repeat_rounded,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      onPressed: () {
+                                                        vibrateSelection();
+                                                        repostNote(note.id);
+                                                      },
+                                                    ),
+                                                    IconButton(
+                                                      icon: Icon(
+                                                        Icons
+                                                            .open_in_browser_rounded,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      onPressed: () async {
+                                                        vibrateSelection();
+                                                        openLink(
+                                                            'https://$url/notes/${note.id}');
+                                                      },
+                                                    ),
+                                                    IconButton(
+                                                      icon: Icon(
+                                                        Icons.share,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      onPressed: () async {
+                                                        vibrateSelection();
+                                                        Share.share(
+                                                            'https://$url/notes/${note.id}');
+                                                      },
+                                                    ),
+                                                    if (note.user.username ==
+                                                        userHandle)
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          Icons.delete_rounded,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                        ),
+                                                        onPressed: () {
+                                                          vibrateSelection();
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Deleting Note'),
+                                                                content: const Text(
+                                                                    "Are you sure you want to delete this note? This action can't be undone."),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      vibrateSelection();
+                                                                    },
+                                                                    child: const Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      deleteNote(
+                                                                          note.id);
+                                                                      vibrateSelection();
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      refreshNotesD();
+                                                                    },
+                                                                    child: const Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      ),
+                                                    if (note.renoteId !=
+                                                        null) ...[
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .primary,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .restart_alt_rounded,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                            ),
+                                                            Text(
+                                                              'Renote',
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                    const SizedBox(width: 2),
+                                                    if (note.visibility ==
+                                                        NoteVisibility
+                                                            .followers) ...[
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .primary,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .lock_rounded,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                            ),
+                                                            Text(
+                                                              'Followers only',
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                    const SizedBox(width: 2),
+                                                    if (note.visibility ==
+                                                        NoteVisibility
+                                                            .specified) ...[
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .primary,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .message_rounded,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                            ),
+                                                            Text(
+                                                              'Private note',
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                    const SizedBox(width: 2),
+                                                    if (note.replyId !=
+                                                        null) ...[
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .primary,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .reply_rounded,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                            ),
+                                                            Text(
+                                                              'Reply',
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            AnimationLimiter(
+                                              child: Row(
+                                                children: AnimationConfiguration
+                                                    .toStaggeredList(
+                                                  duration: const Duration(
+                                                      milliseconds: 500),
+                                                  childAnimationBuilder:
+                                                      (widget) =>
+                                                          SlideAnimation(
+                                                    horizontalOffset: 50.0,
+                                                    child: FadeInAnimation(
+                                                        child: widget),
+                                                  ),
+                                                  children: [
+                                                    IconButton(
+                                                      icon: Icon(
+                                                        Icons
+                                                            .add_reaction_rounded,
                                                         color: Theme.of(context)
                                                             .colorScheme
                                                             .secondary,
@@ -1296,387 +1599,140 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                           context: context,
                                                           builder: (BuildContext
                                                               context) {
-                                                            return AlertDialog(
-                                                              title: const Text(
-                                                                  'Deleting Note'),
-                                                              content: const Text(
-                                                                  "Are you sure you want to delete this note? This action can't be undone."),
-                                                              actions: [
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                    vibrateSelection();
-                                                                  },
-                                                                  child: const Text(
-                                                                      'Cancel'),
+                                                            return Dialog(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        16.0),
+                                                                child: SizedBox(
+                                                                  width: 300,
+                                                                  height: 300,
+                                                                  child: GridView
+                                                                      .builder(
+                                                                    gridDelegate:
+                                                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                                                      crossAxisCount:
+                                                                          5,
+                                                                      crossAxisSpacing:
+                                                                          8.0,
+                                                                      mainAxisSpacing:
+                                                                          8.0,
+                                                                      childAspectRatio:
+                                                                          1.5,
+                                                                    ),
+                                                                    itemCount:
+                                                                        _customEmojis
+                                                                            .length,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      String
+                                                                          emojiName =
+                                                                          _customEmojis
+                                                                              .keys
+                                                                              .elementAt(index);
+                                                                      String
+                                                                          emojiUrl =
+                                                                          _customEmojis[
+                                                                              emojiName]!;
+                                                                      return GestureDetector(
+                                                                        onTap:
+                                                                            () async {
+                                                                          vibrateSelection();
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          try {
+                                                                            await client.notes.reactions.create(
+                                                                              NotesReactionsCreateRequest(
+                                                                                noteId: note.id,
+                                                                                reaction: emojiName,
+                                                                              ),
+                                                                            );
+                                                                            Fluttertoast.showToast(
+                                                                              msg: 'Reaction added successfully!',
+                                                                              toastLength: Toast.LENGTH_LONG,
+                                                                              gravity: ToastGravity.TOP,
+                                                                              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                                                              textColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                                                                            );
+                                                                          } catch (e) {
+                                                                            Fluttertoast.showToast(
+                                                                              msg: 'There was an error while adding the reaction!',
+                                                                              toastLength: Toast.LENGTH_LONG,
+                                                                              gravity: ToastGravity.TOP,
+                                                                              backgroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                                                                              textColor: Theme.of(context).colorScheme.error,
+                                                                            );
+                                                                          }
+                                                                        },
+                                                                        child: Image.network(
+                                                                            emojiUrl),
+                                                                      );
+                                                                    },
+                                                                  ),
                                                                 ),
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    deleteNote(
-                                                                        note.id);
-                                                                    vibrateSelection();
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                    refreshNotesD();
-                                                                  },
-                                                                  child: const Text(
-                                                                      'Confirm'),
-                                                                ),
-                                                              ],
+                                                              ),
                                                             );
                                                           },
                                                         );
                                                       },
                                                     ),
-                                                  if (note.renoteId !=
-                                                      null) ...[
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 3.0),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4.0),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .restart_alt_rounded,
+                                                    if (note.reactions !=
+                                                            null &&
+                                                        note.reactions!
+                                                            .isNotEmpty) ...[
+                                                      if (note.reactions!
+                                                              .length ==
+                                                          1) ...[
+                                                        Text(
+                                                          'Someone reacted with ',
+                                                          style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
                                                                 .colorScheme
-                                                                .primary,
+                                                                .secondary,
                                                           ),
-                                                          Text(
-                                                            'Renote',
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                  const SizedBox(width: 2),
-                                                  if (note.visibility ==
-                                                      NoteVisibility
-                                                          .followers) ...[
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 3.0),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                          width: 1.0,
                                                         ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4.0),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.lock_rounded,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .primary,
-                                                          ),
-                                                          Text(
-                                                            'Followers only',
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                  const SizedBox(width: 2),
-                                                  if (note.visibility ==
-                                                      NoteVisibility
-                                                          .specified) ...[
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 3.0),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4.0),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .message_rounded,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .primary,
-                                                          ),
-                                                          Text(
-                                                            'Private note',
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                  const SizedBox(width: 2),
-                                                  if (note.replyId != null) ...[
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 3.0),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4.0),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.reply_rounded,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .primary,
-                                                          ),
-                                                          Text(
-                                                            'Reply',
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          AnimationLimiter(
-                                            child: Row(
-                                              children: AnimationConfiguration
-                                                  .toStaggeredList(
-                                                duration: const Duration(
-                                                    milliseconds: 500),
-                                                childAnimationBuilder:
-                                                    (widget) => SlideAnimation(
-                                                  horizontalOffset: 50.0,
-                                                  child: FadeInAnimation(
-                                                      child: widget),
-                                                ),
-                                                children: [
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons
-                                                          .add_reaction_rounded,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
-                                                    ),
-                                                    onPressed: () {
-                                                      vibrateSelection();
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return Dialog(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      16.0),
-                                                              child: SizedBox(
-                                                                width: 300,
-                                                                height: 300,
-                                                                child: GridView
-                                                                    .builder(
-                                                                  gridDelegate:
-                                                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                                                    crossAxisCount:
-                                                                        5,
-                                                                    crossAxisSpacing:
-                                                                        8.0,
-                                                                    mainAxisSpacing:
-                                                                        8.0,
-                                                                    childAspectRatio:
-                                                                        1.5,
-                                                                  ),
-                                                                  itemCount:
-                                                                      _customEmojis
-                                                                          .length,
-                                                                  itemBuilder:
-                                                                      (context,
-                                                                          index) {
-                                                                    String
-                                                                        emojiName =
-                                                                        _customEmojis
-                                                                            .keys
-                                                                            .elementAt(index);
-                                                                    String
-                                                                        emojiUrl =
-                                                                        _customEmojis[
-                                                                            emojiName]!;
-                                                                    return GestureDetector(
-                                                                      onTap:
-                                                                          () async {
-                                                                        vibrateSelection();
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                        try {
-                                                                          await client
-                                                                              .notes
-                                                                              .reactions
-                                                                              .create(
-                                                                            NotesReactionsCreateRequest(
-                                                                              noteId: note.id,
-                                                                              reaction: emojiName,
-                                                                            ),
-                                                                          );
-                                                                          Fluttertoast
-                                                                              .showToast(
-                                                                            msg:
-                                                                                'Reaction added successfully!',
-                                                                            toastLength:
-                                                                                Toast.LENGTH_LONG,
-                                                                            gravity:
-                                                                                ToastGravity.TOP,
-                                                                            backgroundColor:
-                                                                                Theme.of(context).colorScheme.primaryContainer,
-                                                                            textColor:
-                                                                                Theme.of(context).colorScheme.onPrimaryContainer,
-                                                                          );
-                                                                        } catch (e) {
-                                                                          Fluttertoast
-                                                                              .showToast(
-                                                                            msg:
-                                                                                'There was an error while adding the reaction!',
-                                                                            toastLength:
-                                                                                Toast.LENGTH_LONG,
-                                                                            gravity:
-                                                                                ToastGravity.TOP,
-                                                                            backgroundColor:
-                                                                                Theme.of(context).colorScheme.onErrorContainer,
-                                                                            textColor:
-                                                                                Theme.of(context).colorScheme.error,
-                                                                          );
-                                                                        }
-                                                                      },
-                                                                      child: Image
-                                                                          .network(
-                                                                              emojiUrl),
-                                                                    );
-                                                                  },
-                                                                ),
-                                                              ),
+                                                        MarkdownBody(
+                                                          data: _replaceEmojis(
+                                                              note.reactions
+                                                                  .keys.first
+                                                                  .replaceAll(
+                                                                      '@.',
+                                                                      '')),
+                                                          styleSheet:
+                                                              MarkdownStyleSheet(
+                                                            p: const TextStyle(
+                                                              fontSize: 20,
                                                             ),
-                                                          );
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
-                                                  if (note.reactions != null &&
-                                                      note.reactions!
-                                                          .isNotEmpty) ...[
-                                                    if (note.reactions!
-                                                            .length ==
-                                                        1) ...[
-                                                      Text(
-                                                        'Someone reacted with ',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .secondary,
+                                                          ),
+                                                          imageBuilder: (uri,
+                                                              title, alt) {
+                                                            return Image
+                                                                .network(
+                                                              uri.toString(),
+                                                              width: 20,
+                                                              height: 20,
+                                                              fit: BoxFit
+                                                                  .contain,
+                                                            );
+                                                          },
                                                         ),
-                                                      ),
-                                                      MarkdownBody(
-                                                        data: _replaceEmojis(
-                                                            note.reactions.keys
-                                                                .first
-                                                                .replaceAll(
-                                                                    '@.', '')),
-                                                        styleSheet:
-                                                            MarkdownStyleSheet(
-                                                          p: const TextStyle(
-                                                            fontSize: 20,
+                                                      ] else ...[
+                                                        Text(
+                                                          '${note.reactions!.length} people have reacted',
+                                                          style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .secondary,
                                                           ),
                                                         ),
-                                                        imageBuilder:
-                                                            (uri, title, alt) {
-                                                          return Image.network(
-                                                            uri.toString(),
-                                                            width: 20,
-                                                            height: 20,
-                                                            fit: BoxFit.contain,
-                                                          );
-                                                        },
-                                                      ),
+                                                      ],
                                                     ] else ...[
                                                       Text(
-                                                        '${note.reactions!.length} people have reacted',
+                                                        'No one has reacted',
                                                         style: TextStyle(
                                                           color:
                                                               Theme.of(context)
@@ -1685,28 +1741,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         ),
                                                       ),
                                                     ],
-                                                  ] else ...[
-                                                    Text(
-                                                      'No one has reacted',
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                      ),
-                                                    ),
                                                   ],
-                                                ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          const Divider(),
-                                        ],
+                                            const Divider(),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            );
+                                  );
+                                },
+                              );
+                            }
                           },
                         ),
                       ),
@@ -2008,15 +2055,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: FutureBuilder<List<DriveFile>>(
                     future: fetchDriveItems(),
                     builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(),
-                            SizedBox(height: 16),
-                            Text('Loading...'),
-                          ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(height: 16),
+                              Text('Loading...'),
+                            ],
                           ),
                         );
                       } else if (snapshot.hasError) {
