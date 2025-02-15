@@ -735,6 +735,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
+                  const PopupMenuItem(
+                    value: 'newui',
+                    child: Row(
+                      children: [
+                        Icon(Icons.new_releases_rounded),
+                        SizedBox(width: 10),
+                        Text('New UI (WIP)'),
+                      ],
+                    ),
+                  ),
                 ];
               },
               onSelected: (value) async {
@@ -790,6 +800,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 } else if (value == 'Announcements') {
                   vibrateSelection();
                   navAnnoucements(context);
+                } else if (value == 'newui') {
+                  vibrateSelection();
+                  navNewUi( context);
                 }
               },
             ),

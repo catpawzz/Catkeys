@@ -5,6 +5,8 @@ import 'package:catkeys/main/settings.dart';
 import 'package:catkeys/pre/setup.dart';
 import 'package:flutter/material.dart';
 
+import '../new/display.dart';
+
 void navHome(BuildContext context) {
   Navigator.push(
     context,
@@ -83,6 +85,24 @@ void navHashtag(BuildContext context, String hashtag) {
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
           HashTagPage(hashtag: hashtag),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+      transitionDuration:
+          const Duration(milliseconds: 200), // Change the animation time here
+    ),
+  );
+}
+
+void navNewUi(BuildContext context) {
+  Navigator.push(
+    context,
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          DisplayPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
           opacity: animation,
