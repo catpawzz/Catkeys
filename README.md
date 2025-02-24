@@ -4,6 +4,7 @@ I developed this client because I couldn't find any Misskey client app that met 
 You can also find this app on the play store! [Play Store](https://play.google.com/store/apps/details?id=com.catpawz.catkeys) 
 
 !!THE PLAY STORE LINK IS CURRENTLY NOT WORKING DUE TO SOME ISSUES WITH GOOGLE PLAY REQUIREMENTS!!
+!!I am not gonna work on this a lot anymore due to some other events in my life, i'm planning to completely redo this though!!
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N2FINT7)
 
