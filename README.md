@@ -42,6 +42,3 @@ details
 
 <img src="https://github.com/user-attachments/assets/97b2dde6-33e2-4f09-b060-c5822d34f032" width="300">
 
-## Repo activity
-
-![Alt](https://repobeats.axiom.co/api/embed/94dcd440ea0a5efd0ab203ef6d6376a1bdae67f9.svg "Repobeats analytics image")
