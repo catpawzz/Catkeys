@@ -1,3 +1,4 @@
+## before you start, please note that development on this is slowed due to me having a lot of projects to work on and also a lot of work :")
 # Catkeys
 I developed this client because I couldn't find any Misskey client app that met my preferences. It's still in very early development and therefore I would recommend not to use it before a real version comes out :<
 
