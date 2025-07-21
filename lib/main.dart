@@ -21,6 +21,7 @@
 //   ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠋⠀⠀⠀⠀⠀⠀⠀
 // This app was made by a boykisser - Deal with it >:3
 //
+import 'dart:io';
 import 'dart:async';
 import 'package:catkeys/pre/setup.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -39,7 +40,9 @@ Future<void> main() async {
   ));
   WidgetsFlutterBinding.ensureInitialized();
   timeDilation = 1.0;
-  await FlutterDisplayMode.setHighRefreshRate();
+  if (Platform.isAndroid) {
+    await FlutterDisplayMode.setHighRefreshRate();
+  }
   runApp(const MyApp());
 }
 
